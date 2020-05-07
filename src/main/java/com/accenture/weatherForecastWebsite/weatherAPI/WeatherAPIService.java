@@ -11,17 +11,24 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.List;
 
 @Component
 public class WeatherAPIService {
+
     @Value("${weather.api.request}")
     private String requestUrlBegin;
 
-    @Value("${weather.api.request.riga}")
+  /* @Value("${weather.api.request.riga}")
     private String locationRiga;
 
-    @Value("${weather.api.key}")
-    private String apiKey;
+   */
+
+    private String prepareLocationName(String userInput) {
+        userInput = userInput.trim();
+        String modifiedLocation = userInput.replaceAll(" ", "%20");
+        return modifiedLocation;
+    }
 
     private String getJsonResponse(URL url) throws Exception {
         HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
@@ -45,25 +52,37 @@ public class WeatherAPIService {
         return JsonResponse;
     }
 
-    private String getLocation(String userInput){
-
-        return userInput;
-    }
-
-    public Forecast getForecastByID(String idLocation){
+    public Forecast getForecastByCityID(Long cityID) {
         try {
-            URL url = new URL(requestUrlBegin+idLocation+apiKey);
+            URL url = new URL(requestUrlBegin + "i=" + cityID);
             String JsonResponse = getJsonResponse(url);
             Gson gson = new Gson();
             Forecast forecast = gson.fromJson(JsonResponse, Forecast.class);
             return forecast;
 
-        }catch (Exception e){
+        } catch (Exception e) {
             throw new RuntimeException();
         }
 
     }
-    public Forecast getForecastForRiga(){
+
+    public List<Forecast> getForecastForLocation(String userInput) {
+        String requestedLocation = prepareLocationName(userInput);
+
+        try {
+            URL url = new URL(requestUrlBegin + "s=" + requestedLocation);
+            String JsonResponse = getJsonResponse(url);
+            Gson gson = new Gson();
+
+            WeatherAPIResponse wheatherAPIResponse = gson.fromJson(JsonResponse, WeatherAPIResponse.class);
+            List<Forecast> forecasts = wheatherAPIResponse.getSearch();
+            return forecasts;
+
+        } catch (Exception e) {
+            throw new RuntimeException();
+        }
+    }
+   /* public Forecast getForecastForRiga(){
         try {
             URL url = new URL(requestUrlBegin+locationRiga+apiKey);
             String JsonResponse = getJsonResponse(url);
@@ -76,6 +95,6 @@ public class WeatherAPIService {
         }
 
     }
-
+*/
 
 }

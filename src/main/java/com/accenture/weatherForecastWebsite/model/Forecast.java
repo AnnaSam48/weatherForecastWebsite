@@ -9,7 +9,8 @@ import java.io.Serializable;
 public class Forecast implements Serializable {
     @Id
     @Column (length = 12)
-    private String id;
+    private Long id;
     private String name;
+
 
 }
