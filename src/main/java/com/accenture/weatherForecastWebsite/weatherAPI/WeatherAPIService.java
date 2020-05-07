@@ -1,6 +1,9 @@
 package com.accenture.weatherForecastWebsite.weatherAPI;
 
+import com.accenture.weatherForecastWebsite.model.Forecast;
+import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.web.JsonPath;
 import org.springframework.stereotype.Component;
 
 import java.io.BufferedReader;
@@ -40,6 +43,38 @@ public class WeatherAPIService {
         bufferedReader.close();
 
         return JsonResponse;
+    }
+
+    private String getLocation(String userInput){
+
+        return userInput;
+    }
+
+    public Forecast getForecastByID(String idLocation){
+        try {
+            URL url = new URL(requestUrlBegin+idLocation+apiKey);
+            String JsonResponse = getJsonResponse(url);
+            Gson gson = new Gson();
+            Forecast forecast = gson.fromJson(JsonResponse, Forecast.class);
+            return forecast;
+
+        }catch (Exception e){
+            throw new RuntimeException();
+        }
+
+    }
+    public Forecast getForecastForRiga(){
+        try {
+            URL url = new URL(requestUrlBegin+locationRiga+apiKey);
+            String JsonResponse = getJsonResponse(url);
+            Gson gson = new Gson();
+            Forecast forecast = gson.fromJson(JsonResponse, Forecast.class);
+            return forecast;
+
+        }catch (Exception e){
+            throw new RuntimeException();
+        }
+
     }
 
 
