@@ -6,10 +6,10 @@ import java.util.List;
 
 public class WeatherAPIResponse {
 
-    private List<Forecast> Search;
+    private Forecast Search;
     private String Response;
 
-    public List<Forecast> getSearch(){return Search;}
+    public Forecast getSearch(){return Search;}
 
 
 }
