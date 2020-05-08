@@ -83,7 +83,7 @@ public class WeatherAPIService {
 
     }
 
-    public Forecast getForecastForUserInput(String userInput) {
+    public Forecast getForecastByCity(String userInput) {
 
         String requestedLocation = prepareLocationName(userInput);
         try {
