@@ -1,12 +1,14 @@
 package com.accenture.weatherForecastWebsite.weatherAPI;
 
 
+import com.accenture.weatherForecastWebsite.model.Forecast;
+
 public class WeatherAPIResponse {
 
-    //private List<Forecast> Search;
+    private Forecast Search;
     private String Response;
 
-   // public List<Forecast> getSearch(){return Search;}
+    public Forecast getSearch(){return Search;}
 
 
 }

@@ -14,6 +14,9 @@ public class Cities implements Serializable {
     private String state;
     private String country;
 
+    public Cities() {
+    }
+
     public Cities(Long id, String name, String state, String country) {
         this.id = id;
         this.name = name;

@@ -6,6 +6,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ForecastRepository extends CrudRepository<Forecast, Long> {
-    Forecast findAllByID(Long id);
-    Forecast findAllByName(String name);
+    Forecast findAllByCityId(Long cityId);
+    Forecast findAllByCityName(String cityName);
 }

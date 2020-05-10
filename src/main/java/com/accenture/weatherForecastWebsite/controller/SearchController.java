@@ -34,7 +34,7 @@ public class SearchController {
     public ModelAndView showByLocation(@PathVariable String location, Model model, BindingResult bindingResult) {
         ModelAndView modelAndView = new ModelAndView();
 
-        Forecast matchedLocation = forecastRepository.findAllByName(location);
+        Forecast matchedLocation = forecastRepository.findAllByCityName(location);
         if (bindingResult.hasErrors()) {
 
             //probably error info needed here
@@ -47,7 +47,7 @@ public class SearchController {
                 forecastRepository.save(forecastToAdd);
                 modelAndView.setViewName("/");
             } else {
-                forecastToAdd.setTemperature(weatherAPIService.getForecastByCity(location).getTemperature());
+                forecastToAdd.setClouds(weatherAPIService.getForecastByCity(location).getClouds());
 
             }
             modelAndView.addObject("forecast", forecastToAdd);
@@ -55,4 +55,6 @@ public class SearchController {
         modelAndView.setViewName("/");
         return modelAndView;
     }
+
+
 }
