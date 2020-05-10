@@ -41,9 +41,9 @@ public class WeatherAPIService {
     to string probably in place of this^^^
 */
 
-    private String prepareLocationName(String userInput) {
-        userInput = userInput.trim();
-        String modifiedLocation = userInput.replaceAll(" ", "%20");
+    private String prepareLocationName(String locationName) {
+        locationName = locationName.trim();
+        String modifiedLocation = locationName.replaceAll(" ", "%20");
         return modifiedLocation;
     }
 

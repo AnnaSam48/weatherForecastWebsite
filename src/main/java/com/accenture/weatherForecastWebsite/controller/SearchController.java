@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.Optional;
+
 
 public class SearchController {
     //We need to change search by id, if db is used!
@@ -34,7 +36,7 @@ public class SearchController {
     public ModelAndView showByLocation(@PathVariable String location, Model model, BindingResult bindingResult) {
         ModelAndView modelAndView = new ModelAndView();
 
-        Forecast matchedLocation = forecastRepository.findAllByCityName(location);
+        Optional<Forecast> matchedLocation = forecastRepository.findByCityName(location);
         if (bindingResult.hasErrors()) {
 
             //probably error info needed here

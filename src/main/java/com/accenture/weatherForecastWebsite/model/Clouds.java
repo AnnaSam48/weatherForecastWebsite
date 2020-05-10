@@ -8,15 +8,15 @@ import javax.persistence.Embeddable;
 
 @Embeddable
 public class Clouds {
-    @SerializedName("all")
+    @SerializedName(value="all", alternate="allClouds")
     @Expose
-    private long all;
+    private long allClouds;
 
     public long getAll() {
-        return all;
+        return allClouds;
     }
 
     public void setAll(long all) {
-        this.all = all;
+        this.allClouds = allClouds;
     }
 }
