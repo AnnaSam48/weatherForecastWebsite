@@ -18,7 +18,8 @@ public class RigaForecastController {
 
     @Autowired
     private ForecastRepository forecastRepository;
-    
+
+
         @GetMapping("/riga")
         public String indexPage(Model model){
             String locationName = "Riga";
