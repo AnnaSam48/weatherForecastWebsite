@@ -4,12 +4,14 @@ import com.accenture.weatherForecastWebsite.model.Forecast;
 import com.accenture.weatherForecastWebsite.repository.ForecastRepository;
 import com.accenture.weatherForecastWebsite.weatherAPI.WeatherAPIResponse;
 import com.accenture.weatherForecastWebsite.weatherAPI.WeatherAPIService;
+import com.google.gson.internal.$Gson$Types;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.Optional;
@@ -28,33 +30,37 @@ public class SearchController {
     private ForecastRepository forecastRepository;
 
     @GetMapping("/searchLocation")
-    public String searchByLocation(@PathVariable String location, Model model) {
-        return "index";
+    public ModelAndView searchByLocation(@PathVariable String location, Forecast forecast) {
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("searchLocation");
+        return modelAndView;
     }
 
+
     @PostMapping("/searchLocation")
-    public ModelAndView showByLocation(@PathVariable String location, Model model, BindingResult bindingResult) {
+    public ModelAndView showByLocation(@PathVariable String location) {
         ModelAndView modelAndView = new ModelAndView();
+        String cityID = weatherAPIService.getForecastByCity(location).getId();
+        Forecast matchedLocation = forecastRepository.findAllById(cityID);
 
-        Optional<Forecast> matchedLocation = forecastRepository.findByCityName(location);
-        if (bindingResult.hasErrors()) {
 
-            //probably error info needed here
-
+        Forecast forecastToAdd = weatherAPIService.getForecastByCity(location);
+        if (matchedLocation == null) {
+            forecastToAdd.setCityName(location);
+            forecastToAdd.setId(cityID);
+            forecastToAdd.setMainWeather(weatherAPIService.getForecastByCityID(cityID).getMainWeather());
+            forecastToAdd.setClouds(weatherAPIService.getForecastByCity(location).getClouds());
+            modelAndView.setViewName("/");
         } else {
+            forecastToAdd.setMainWeather(weatherAPIService.getForecastByCityID(cityID).getMainWeather());
+            forecastToAdd.setClouds(weatherAPIService.getForecastByCity(cityID).getClouds());
 
-            // do we need try catch cycle here?
-            Forecast forecastToAdd = weatherAPIService.getForecastByCity(location);
-            if (matchedLocation == null) {
-                forecastRepository.save(forecastToAdd);
-                modelAndView.setViewName("/");
-            } else {
-                forecastToAdd.setClouds(weatherAPIService.getForecastByCity(location).getClouds());
-
-            }
-            modelAndView.addObject("forecast", forecastToAdd);
         }
-        modelAndView.setViewName("/");
+        forecastRepository.save(forecastToAdd);
+        modelAndView.addObject("forecast", forecastToAdd);
+        modelAndView.setViewName("/searchLocation");
+
+
         return modelAndView;
     }
 

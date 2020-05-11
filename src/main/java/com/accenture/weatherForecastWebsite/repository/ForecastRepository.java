@@ -8,11 +8,18 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface ForecastRepository extends CrudRepository<Forecast, Long> {
+public interface ForecastRepository extends CrudRepository<Forecast, String> {
 
-    Optional<Forecast>findByDateOnMachine(long dateOnMachine);
-    Optional<Forecast>findByCityName(String cityName);
-    List<Forecast> findAllByCityId(long cityId);
+ /*  Optional<Forecast>findByDateOnMachine(long dateOnMachine);
+   Optional<Forecast>findByCityName(String cityName);
+    List<Forecast> findAllByCityId(long id);
     List<Forecast> findAllByCityName(String cityName);
     List<Forecast> findAllByDateOnMachine(long dateOnMachine);
+
+  */
+
+
+
+    Forecast findAllById(String id);
+    Forecast findAllByCityName(String cityName);
 }

@@ -12,8 +12,55 @@ import java.util.List;
 public class Forecast implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+    private String id;
+    @Column
+    private MainWeather mainWeather;
+    @Column
+    private String cityName;
+    @Column
+    private Clouds clouds;
+
+    public Forecast(String id, MainWeather mainWeather, String cityName, Clouds clouds) {
+        this.id = id;
+        this.mainWeather = mainWeather;
+        this.cityName = cityName;
+        this.clouds = clouds;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public MainWeather getMainWeather() {
+        return mainWeather;
+    }
+
+    public void setMainWeather(MainWeather mainWeather) {
+        this.mainWeather = mainWeather;
+    }
+
+    public String getCityName() {
+        return cityName;
+    }
+
+    public void setCityName(String cityName) {
+        this.cityName = cityName;
+    }
+
+    public Clouds getClouds() {
+        return clouds;
+    }
+
+    public void setClouds(Clouds clouds) {
+        this.clouds = clouds;
+    }
+/*  @Id
+   @GeneratedValue(strategy = GenerationType.AUTO)
+ private long id;
     @SerializedName(value = "coord", alternate = "coordinates")
     @Expose
     private Coordinates coordinates;
@@ -25,7 +72,7 @@ public class Forecast implements Serializable {
     @SerializedName("base")
     @Expose
     private String base;
-    @SerializedName(value="main", alternate = "mainWeather")
+    @SerializedName(value = "main", alternate = "mainWeather")
     @Expose
     private MainWeather mainWeather;
     @SerializedName("wind")
@@ -43,9 +90,6 @@ public class Forecast implements Serializable {
     @SerializedName("timezone")
     @Expose
     private long timezone;
-    @SerializedName(value = "id", alternate = "cityId")
-    @Expose
-    private long cityId;
     @SerializedName(value = "name", alternate = "cityName")
     @Expose
     private String cityName;
@@ -53,12 +97,14 @@ public class Forecast implements Serializable {
     @Expose
     private long cod;
 
+
+
     public Forecast() {
     }
 
     public Forecast(long id, Coordinates coordinates, List<Weather> weather, String base,
                     MainWeather mainWeather, Wind wind, Clouds clouds, long dateOnMachine,
-                    Systems systems, long timezone, long cityId, String cityName, long cod) {
+                    Systems systems, long timezone, String cityName, long cod) {
         this.id = id;
         this.coordinates = coordinates;
         this.weather = weather;
@@ -69,7 +115,7 @@ public class Forecast implements Serializable {
         this.dateOnMachine = dateOnMachine;
         this.systems = systems;
         this.timezone = timezone;
-        this.cityId = cityId;
+       // this.cityId = cityId;
         this.cityName = cityName;
         this.cod = cod;
     }
@@ -154,13 +200,15 @@ public class Forecast implements Serializable {
         this.timezone = timezone;
     }
 
-    public long getCityId() {
+   /* public long getCityId() {
         return cityId;
     }
 
     public void setCityId(long cityId) {
         this.cityId = cityId;
     }
+
+
 
     public String getCityName() {
         return cityName;
@@ -177,4 +225,5 @@ public class Forecast implements Serializable {
     public void setCod(long cod) {
         this.cod = cod;
     }
+    */
 }
