@@ -71,7 +71,7 @@ public class WeatherAPIService {
 
     public Forecast getForecastByCityID(Long cityID) {
         try {
-            URL url = new URL(requestUrlBegin + cityID + apiKey); //request link here needs to be different
+            URL url = new URL(requestUrlBegin +prefixCityId+ cityID + apiKey); //request link here needs to be different
             String JsonResponse = getJsonResponse(url);
             Gson gson = new Gson();
             Forecast forecast = gson.fromJson(JsonResponse, Forecast.class);
@@ -87,7 +87,7 @@ public class WeatherAPIService {
 
         String requestedLocation = prepareLocationName(userInput);
         try {
-            URL url = new URL(requestUrlBegin + requestedLocation + apiKey);
+            URL url = new URL(requestUrlBegin +prefixName+ requestedLocation + apiKey);
             String JsonResponse = getJsonResponse(url);
             Gson gson = new Gson();
             Forecast forecast = gson.fromJson(JsonResponse, Forecast.class);
@@ -99,10 +99,11 @@ public class WeatherAPIService {
 
     }
 
-    //Constant till we get answer what exactly we need to be in CRON job
+    //Constant till we get answer what exactly we need to do in CRON job
     public Forecast getForecastForRiga() {
         try {
-            URL url = new URL(requestUrlBegin + "Riga" + apiKey);
+            String locationName="Riga";
+            URL url = new URL(requestUrlBegin + prefixName + locationName + apiKey);
             String JsonResponse = getJsonResponse(url);
             Gson gson = new Gson();
             Forecast forecast = gson.fromJson(JsonResponse, Forecast.class);
