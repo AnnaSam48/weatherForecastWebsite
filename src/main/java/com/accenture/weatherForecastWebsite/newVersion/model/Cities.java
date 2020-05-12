@@ -14,11 +14,11 @@ public class Cities implements Serializable {
     @Column
     private double temp;
     @Column
-    private Long sunrise; //milisec
+    private String sunrise; //milisec
     @Column
-    private Long sunset; //milisec
+    private String sunset; //milisec
 
-    public Cities(String id, String cityName, String country, double temp, Long sunrise, Long sunset) {
+    public Cities(String id, String cityName, String country, double temp, String sunrise, String sunset) {
         this.id = id;
         this.cityName = cityName;
         this.country = country;
@@ -60,19 +60,19 @@ public class Cities implements Serializable {
         this.temp = temp;
     }
 
-    public Long getSunrise() {
+    public String getSunrise() {
         return sunrise;
     }
 
-    public void setSunrise(Long sunrise) {
+    public void setSunrise(String sunrise) {
         this.sunrise = sunrise;
     }
 
-    public Long getSunset() {
+    public String getSunset() {
         return sunset;
     }
 
-    public void setSunset(Long sunset) {
+    public void setSunset(String sunset) {
         this.sunset = sunset;
     }
 }

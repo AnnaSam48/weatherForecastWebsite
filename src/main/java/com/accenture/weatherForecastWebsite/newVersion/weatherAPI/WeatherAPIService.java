@@ -14,6 +14,8 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 
 @Component
@@ -116,16 +118,22 @@ public class WeatherAPIService {
             JsonNode childCountry = child.get("country");
             String country = childCountry.asText();
 
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm:ss");
+
             JsonNode childSunrise = child.get("sunrise");
-            Long sunrise = childSunrise.asLong();
+            Long sunriseRaw = childSunrise.asLong();
+            String sunrise = simpleDateFormat.format(sunriseRaw);
+
+
             JsonNode childSunset = child.get("sunset");
-            Long sunset = childSunset.asLong();
+            Long sunsetRaw = childSunset.asLong();
+            String sunset = simpleDateFormat.format(sunsetRaw);
 
             JsonNode childMain = node.get("main");
             JsonNode childMainTemp = childMain.get("temp");
             double tempK = childMainTemp.asDouble();
 
-            double tempC = tempK -273.15; //we get it in Kelvins, so we need to change it celsius
+            double tempC = tempK - 273.15; //we get it in Kelvins, so we need to change it celsius
             NumberFormat formatter = new DecimalFormat("#0.0");
             String tempFormatted = formatter.format(tempC);
             double temp = Double.parseDouble(tempFormatted);
