@@ -10,4 +10,6 @@ class WeatherForecastWebsiteApplicationTests {
 	void contextLoads() {
 	}
 
+
 }
+
