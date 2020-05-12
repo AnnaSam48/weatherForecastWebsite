@@ -1,6 +1,8 @@
-package com.accenture.weatherForecastWebsite.weatherAPI;
+package com.accenture.weatherForecastWebsite.newVersion.weatherAPI;
 
-import com.accenture.weatherForecastWebsite.model.Forecast;
+import com.accenture.weatherForecastWebsite.newVersion.model.Cities;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -10,6 +12,8 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 
 
 @Component
@@ -53,6 +57,7 @@ public class WeatherAPIService {
         urlConnection.setReadTimeout(3000);
         urlConnection.connect();
 
+
         InputStream inputStream = urlConnection.getInputStream();
         InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
         BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
@@ -67,14 +72,21 @@ public class WeatherAPIService {
         bufferedReader.close();
 
         return JsonResponse;
+
+       /* StringBuilder content = new StringBuilder();
+        return bufferedReader.lines()
+                .collect(Collectors.joining(System.lineSeparator()));
+//TODO put in try cycle for   bufferedReader.close();!!!
+
+        */
     }
 
-    public Forecast getForecastByCityID(String cityID) {
+    public Cities getForecastByCityID(String cityID) {
         try {
-            URL url = new URL(requestUrlBegin +prefixCityId+ cityID + apiKey); //request link here needs to be different
+            URL url = new URL(requestUrlBegin + prefixCityId + cityID + apiKey); //request link here needs to be different
             String JsonResponse = getJsonResponse(url);
             Gson gson = new Gson();
-            Forecast forecast = gson.fromJson(JsonResponse, Forecast.class);
+            Cities forecast = gson.fromJson(JsonResponse, Cities.class);
             return forecast;
 
         } catch (Exception e) {
@@ -84,36 +96,47 @@ public class WeatherAPIService {
 
     }
 
-    public Forecast getForecastByCity(String userInput) {
+    public Cities getForecastByCity(String userInput) {
 
         String requestedLocation = prepareLocationName(userInput);
         try {
-            URL url = new URL(requestUrlBegin + prefixName+ requestedLocation + apiKey);
+            URL url = new URL(requestUrlBegin + prefixName + requestedLocation + apiKey);
             String JsonResponse = getJsonResponse(url);
-            Gson gson = new Gson();
-            Forecast forecast = gson.fromJson(JsonResponse, Forecast.class);
+
+            ObjectMapper objectMapper = new ObjectMapper();
+
+            JsonNode node = objectMapper.readValue(JsonResponse, JsonNode.class);
+            JsonNode idNode = node.get("id");
+            String id = idNode.asText();
+
+            JsonNode cityNameNode = node.get("name");
+            String cityName = cityNameNode.asText();
+
+            JsonNode child = node.get("sys");
+            JsonNode childCountry = child.get("country");
+            String country = childCountry.asText();
+
+            JsonNode childSunrise = child.get("sunrise");
+            Long sunrise = childSunrise.asLong();
+            JsonNode childSunset = child.get("sunset");
+            Long sunset = childSunset.asLong();
+
+            JsonNode childMain = node.get("main");
+            JsonNode childMainTemp = childMain.get("temp");
+            double tempK = childMainTemp.asDouble();
+
+            double tempC = tempK -273.15; //we get it in Kelvins, so we need to change it celsius
+            NumberFormat formatter = new DecimalFormat("#0.0");
+            String tempFormatted = formatter.format(tempC);
+            double temp = Double.parseDouble(tempFormatted);
+
+            Cities forecast = new Cities(id, cityName, country, temp, sunrise, sunset);
             return forecast;
 
         } catch (Exception e) {
             e.printStackTrace();
             throw new RuntimeException();
 
-        }
-
-    }
-
-    //Constant till we get answer what exactly we need to be in CRON job
-    public Forecast getForecastForRiga() {
-        try {
-            URL url = new URL(requestUrlBegin + prefixName+ "Riga" + apiKey);
-            String JsonResponse = getJsonResponse(url);
-            Gson gson = new Gson();
-            Forecast forecast = gson.fromJson(JsonResponse, Forecast.class);
-            return forecast;
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw new RuntimeException();
         }
 
     }

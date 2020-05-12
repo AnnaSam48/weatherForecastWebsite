@@ -6,7 +6,7 @@ import javax.persistence.Id;
 import java.io.Serializable;
 
 @Entity
-public class Cities implements Serializable {
+public class CitiesOld implements Serializable {
     @Id
     @Column(length = 12)
     private Long id;
@@ -14,10 +14,10 @@ public class Cities implements Serializable {
     private String state;
     private String country;
 
-    public Cities() {
+    public CitiesOld() {
     }
 
-    public Cities(Long id, String name, String state, String country) {
+    public CitiesOld(Long id, String name, String state, String country) {
         this.id = id;
         this.name = name;
         this.state = state;

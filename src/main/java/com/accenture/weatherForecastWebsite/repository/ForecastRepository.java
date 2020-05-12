@@ -21,5 +21,5 @@ public interface ForecastRepository extends CrudRepository<Forecast, String> {
 
 
     Forecast findAllById(String id);
-    Forecast findAllByCityName(String cityName);
+    Forecast findByCityName(String cityName);
 }

@@ -3,7 +3,7 @@ package com.accenture.weatherForecastWebsite.weatherAPI;
 
 import com.accenture.weatherForecastWebsite.model.Forecast;
 
-public class WeatherAPIResponse {
+public class WeatherAPIResponseOld {
 
     private Forecast Search;
     private String Response;
