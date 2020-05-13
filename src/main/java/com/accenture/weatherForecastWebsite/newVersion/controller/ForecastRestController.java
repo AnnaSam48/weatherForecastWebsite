@@ -50,7 +50,8 @@ public class ForecastRestController {
             return cityToAdd;
         } else {
             String matchedLocationId = matchedLocation.getId();
-            long lastUpdateTime = matchedLocation.getTimestamp();
+            Timestamp lastUpdateRaw = matchedLocation.getTimestamp();
+            long lastUpdateTime = Long.parseLong(lastUpdateRaw.toString());
             long currentTimeMinusH = System.currentTimeMillis() - (60 * 60 * 1000);
 
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd.MM.yyyy");
