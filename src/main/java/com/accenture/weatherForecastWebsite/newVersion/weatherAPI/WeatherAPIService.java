@@ -12,7 +12,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.text.DecimalFormat;
+import java.text.DecimalFormat
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -36,7 +36,7 @@ public class WeatherAPIService {
     @Value("${weather.api.request.metric}") //example  api.openweathermap.org/data/2.5/find?q=London&units=metric
     private String useMetric;
 
-/* for user location class
+/* //TODO for user location class
     private String latitude = "lat="; //prefix before latitude
     private double latNumbers = 0.0; //need to be updated for actual latitude
     private String longitude = "&lon="; //prefix before longitude;
@@ -44,7 +44,7 @@ public class WeatherAPIService {
 
 
     private String userLocation = latitude + String.format("%12.3f", latNumbers) + longitude + String.format("%12.3f", lonNumbers);    //lat={lat}&lon={lon}
-    to string probably in place of this^^^
+   //TODO to string probably in place of this^^^
 */
 
     private String prepareLocationName(String locationName) {
@@ -118,16 +118,21 @@ public class WeatherAPIService {
             JsonNode childCountry = child.get("country");
             String country = childCountry.asText();
 
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm:ss");
 
             JsonNode childSunrise = child.get("sunrise");
-            Long sunriseRaw = childSunrise.asLong();
+            Long sunriseUnix = childSunrise.asLong();
+            Date sunriseRaw = new java.util.Date(sunriseUnix*1000L);
+            SimpleDateFormat simpleDateFormat = new java.text.SimpleDateFormat("HH:mm");
             String sunrise = simpleDateFormat.format(sunriseRaw);
 
 
+
+
             JsonNode childSunset = child.get("sunset");
-            Long sunsetRaw = childSunset.asLong();
+            Long sunsetUnix = childSunset.asLong();
+            Date sunsetRaw = new java.util.Date(sunsetUnix*1000L);
             String sunset = simpleDateFormat.format(sunsetRaw);
+
 
             JsonNode childMain = node.get("main");
             JsonNode childMainTemp = childMain.get("temp");
