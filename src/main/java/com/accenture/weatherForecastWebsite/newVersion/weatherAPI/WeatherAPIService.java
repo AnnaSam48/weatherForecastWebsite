@@ -12,7 +12,8 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.text.DecimalFormat
+import java.sql.Timestamp;
+import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -87,8 +88,44 @@ public class WeatherAPIService {
         try {
             URL url = new URL(requestUrlBegin + prefixCityId + cityID + apiKey); //request link here needs to be different
             String JsonResponse = getJsonResponse(url);
-            Gson gson = new Gson();
-            Cities forecast = gson.fromJson(JsonResponse, Cities.class);
+
+            ObjectMapper objectMapper = new ObjectMapper();
+
+            JsonNode node = objectMapper.readValue(JsonResponse, JsonNode.class);
+            JsonNode idNode = node.get("id");
+            String id = idNode.asText();
+
+            JsonNode cityNameNode = node.get("name");
+            String cityName = cityNameNode.asText();
+
+            JsonNode child = node.get("sys");
+            JsonNode childCountry = child.get("country");
+            String country = childCountry.asText();
+
+            JsonNode childSunrise = child.get("sunrise");
+            Long sunriseUnix = childSunrise.asLong();
+            Date sunriseRaw = new java.util.Date(sunriseUnix*1000L);
+            SimpleDateFormat simpleDateFormat = new java.text.SimpleDateFormat("HH:mm");
+            String sunrise = simpleDateFormat.format(sunriseRaw);
+
+            JsonNode childSunset = child.get("sunset");
+            Long sunsetUnix = childSunset.asLong();
+            Date sunsetRaw = new java.util.Date(sunsetUnix*1000L);
+            String sunset = simpleDateFormat.format(sunsetRaw);
+
+            JsonNode childMain = node.get("main");
+            JsonNode childMainTemp = childMain.get("temp");
+            double tempK = childMainTemp.asDouble();
+
+            double tempC = tempK - 273.15; //we get it in Kelvins, so we need to change it celsius
+            NumberFormat formatter = new DecimalFormat("#0.0");
+            String tempFormatted = formatter.format(tempC);
+            double temp = Double.parseDouble(tempFormatted);
+
+
+            Cities forecast = new Cities(id, cityName, country, temp, sunrise, sunset);
+
+
             return forecast;
 
         } catch (Exception e) {
@@ -118,21 +155,16 @@ public class WeatherAPIService {
             JsonNode childCountry = child.get("country");
             String country = childCountry.asText();
 
-
             JsonNode childSunrise = child.get("sunrise");
             Long sunriseUnix = childSunrise.asLong();
             Date sunriseRaw = new java.util.Date(sunriseUnix*1000L);
             SimpleDateFormat simpleDateFormat = new java.text.SimpleDateFormat("HH:mm");
             String sunrise = simpleDateFormat.format(sunriseRaw);
 
-
-
-
             JsonNode childSunset = child.get("sunset");
             Long sunsetUnix = childSunset.asLong();
             Date sunsetRaw = new java.util.Date(sunsetUnix*1000L);
             String sunset = simpleDateFormat.format(sunsetRaw);
-
 
             JsonNode childMain = node.get("main");
             JsonNode childMainTemp = childMain.get("temp");
@@ -143,7 +175,10 @@ public class WeatherAPIService {
             String tempFormatted = formatter.format(tempC);
             double temp = Double.parseDouble(tempFormatted);
 
+
             Cities forecast = new Cities(id, cityName, country, temp, sunrise, sunset);
+
+
             return forecast;
 
         } catch (Exception e) {
@@ -153,6 +188,8 @@ public class WeatherAPIService {
         }
 
     }
+    //TODO          Make classes for conversions date/Kelvin and all the rest ones
+    //TODO          Make fields that are identical as one
 
 
 }
