@@ -1,7 +1,11 @@
 package com.accenture.weatherForecastWebsite.newVersion.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.annotations.CreationTimestamp;
+
 import javax.persistence.*;
 import java.io.Serializable;
+import java.sql.Timestamp;
 
 @Entity
 public class Cities implements Serializable {
@@ -18,6 +22,11 @@ public class Cities implements Serializable {
     @Column
     private String sunset; //milisec
 
+    @CreationTimestamp
+    @JsonIgnore
+    private Timestamp timestamp;
+
+
     public Cities(String id, String cityName, String country, double temp, String sunrise, String sunset) {
         this.id = id;
         this.cityName = cityName;
@@ -27,6 +36,8 @@ public class Cities implements Serializable {
         this.sunset = sunset;
     }
     public Cities(){}
+
+
 
     public String getId() {
         return id;
@@ -70,6 +81,14 @@ public class Cities implements Serializable {
 
     public String getSunset() {
         return sunset;
+    }
+
+    public Timestamp getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(Timestamp timestamp) {
+        this.timestamp = timestamp;
     }
 
     public void setSunset(String sunset) {
