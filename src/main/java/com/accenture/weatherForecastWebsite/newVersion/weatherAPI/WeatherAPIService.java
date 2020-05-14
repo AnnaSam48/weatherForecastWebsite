@@ -3,8 +3,11 @@ package com.accenture.weatherForecastWebsite.newVersion.weatherAPI;
 import com.accenture.weatherForecastWebsite.newVersion.model.Cities;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.stereotype.Component;
 
 import java.io.BufferedReader;
@@ -12,7 +15,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.sql.Timestamp;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
@@ -84,6 +86,7 @@ public class WeatherAPIService {
         */
     }
 
+    @Cacheable(value = "cityId", key = "#cityId")
     public Cities getForecastByCityID(String cityID) {
         try {
             URL url = new URL(requestUrlBegin + prefixCityId + cityID + apiKey); //request link here needs to be different
@@ -135,10 +138,14 @@ public class WeatherAPIService {
 
     }
 
+    @Caching(cacheable = @Cacheable(value ="city", key="#userInput"),
+    put = @CachePut(value = "city"),
+            evict = @CacheEvict(value = "city"))
     public Cities getForecastByCity(String userInput) {
 
         String requestedLocation = prepareLocationName(userInput);
         try {
+
             URL url = new URL(requestUrlBegin + prefixName + requestedLocation + apiKey);
             String JsonResponse = getJsonResponse(url);
 
@@ -180,6 +187,7 @@ public class WeatherAPIService {
 
 
             return forecast;
+
 
         } catch (Exception e) {
             e.printStackTrace();
