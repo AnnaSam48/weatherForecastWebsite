@@ -138,9 +138,7 @@ public class WeatherAPIService {
 
     }
 
-    @Caching(cacheable = @Cacheable(value ="city", key="#userInput"),
-    put = @CachePut(value = "city"),
-            evict = @CacheEvict(value = "city"))
+    @Caching(cacheable = @Cacheable(value ="city", key="#userInput"))
     public Cities getForecastByCity(String userInput) {
 
         String requestedLocation = prepareLocationName(userInput);
@@ -160,7 +158,13 @@ public class WeatherAPIService {
 
             JsonNode child = node.get("sys");
             JsonNode childCountry = child.get("country");
-            String country = childCountry.asText();
+            String country = null;
+            if(childCountry==null){
+                country = "No one owns it!";
+            }else{
+                country = childCountry.asText();
+            }
+
 
             JsonNode childSunrise = child.get("sunrise");
             Long sunriseUnix = childSunrise.asLong();
