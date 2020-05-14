@@ -54,7 +54,7 @@ public class ForecastRestController {
             Cities getNewCity = weatherAPIService.getForecastByCity(cityName);
             Cities cityToAdd = new Cities();
             cityToAdd.setId(getNewCity.getId());
-            cityToAdd.setCityName(cityName);
+            cityToAdd.setCityName(getNewCity.getCityName());
             cityToAdd.setCountry(getNewCity.getCountry());
             cityToAdd.setTemp(getNewCity.getTemp());
             cityToAdd.setSunrise(getNewCity.getSunrise());
