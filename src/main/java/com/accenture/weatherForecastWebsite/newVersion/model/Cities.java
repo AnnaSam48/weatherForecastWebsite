@@ -1,23 +1,33 @@
 package com.accenture.weatherForecastWebsite.newVersion.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import org.hibernate.annotations.CreationTimestamp;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.sql.Timestamp;
 
+@ApiModel(description = "City's weather forecast details")
 @Entity
 public class Cities implements Serializable {
+
+    @ApiModelProperty(notes = "Unique identifier for city", required = true)
     @Id
     private String id;
+    @ApiModelProperty(notes = "Name of the city",required = true)
     @Column
     private String cityName;
+    @ApiModelProperty(notes = "Name of the country")
     @Column
     private String country;
+    @ApiModelProperty(notes = "Temperature in the city")
     @Column
     private double temp;
+    @ApiModelProperty(notes = "Time of sunrise")
     @Column
     private String sunrise; //milisec
+    @ApiModelProperty(notes = "Time of sunset")
     @Column
     private String sunset; //milisec
 
