@@ -5,9 +5,9 @@ import com.accenture.weatherForecastWebsite.newVersion.repository.ForecastsByCit
 import com.accenture.weatherForecastWebsite.newVersion.weatherAPI.WeatherAPIService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
+import java.sql.Date;
 import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
+
 
 
 @RestController
@@ -28,10 +28,10 @@ public class ForecastRestController {
     private Cities findByCityName(String cityName) {
         Cities matchedLocation = forecastsByCityRepository.findByCityName(cityName);
         if (matchedLocation != null) {
-            Timestamp lastUpdateRaw = matchedLocation.getTimestamp();
-            long lastUpdateTime = Long.parseLong(lastUpdateRaw.toString());
-            long currentTimeMinusH = System.currentTimeMillis() - (60 * 60 * 1000);
-            if (lastUpdateTime < currentTimeMinusH) {
+            Timestamp lastTimeUpdate = matchedLocation.getTimestamp();
+            Timestamp currentTimeMinusHour = new Timestamp((System.currentTimeMillis() - (60 * 60 * 1000)));
+
+            if (lastTimeUpdate.after(currentTimeMinusHour)) {
                 return matchedLocation;
             } else {
                 Cities forecast = weatherAPIService.getForecastByCity(cityName);
@@ -48,8 +48,7 @@ public class ForecastRestController {
     @PostMapping(value = "/{cityName}")
     public Cities setForecast(@PathVariable String cityName) {
         Cities matchedLocation = forecastsByCityRepository.findByCityName(cityName);
-        long currentTimeRaw = System.currentTimeMillis();
-        Timestamp currentTime = new Timestamp(currentTimeRaw);
+        Timestamp currentTime = new Timestamp(System.currentTimeMillis());
 
         if (matchedLocation == null) {
             Cities getNewCity = weatherAPIService.getForecastByCity(cityName);
@@ -66,21 +65,16 @@ public class ForecastRestController {
             return cityToAdd;
         } else {
             String matchedLocationId = matchedLocation.getId();
-            Timestamp lastUpdateRaw = matchedLocation.getTimestamp();
-            long lastUpdateTime = Long.parseLong(lastUpdateRaw.toString());
-            long currentTimeMinusH = System.currentTimeMillis() - (60 * 60 * 1000);
 
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd.MM.yyyy");
-            String currentDate = simpleDateFormat.format(currentTime);
-            String lastUpdateDate = simpleDateFormat.format(lastUpdateTime);
-
-            if (lastUpdateTime < currentTimeMinusH || lastUpdateTime == currentTimeMinusH) {
-
+            Timestamp lastTimeUpdate = matchedLocation.getTimestamp();
+            Timestamp currentTimeMinusHour = new Timestamp((System.currentTimeMillis() - (60 * 60 * 1000)));
+            if (currentTimeMinusHour.after(lastTimeUpdate)) {
+                //if last update is older than 1h
                 Cities cityForUpdate = weatherAPIService.getForecastByCityID(matchedLocationId);
                 matchedLocation.setTimestamp(currentTime);
                 //API updates information in their db in every 2h, as we don't know at what time, we update every 1h, to get more precise data
-
-                if (currentDate != lastUpdateDate) {
+                Date today=new Date(System.currentTimeMillis());
+                if(lastTimeUpdate.before(today)){
                     //last update didn't happen today
                     matchedLocation.setSunrise(cityForUpdate.getSunrise());
                     matchedLocation.setSunset(cityForUpdate.getSunset());
