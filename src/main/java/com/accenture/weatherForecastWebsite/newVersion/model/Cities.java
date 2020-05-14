@@ -12,16 +12,16 @@ import java.sql.Timestamp;
 @Entity
 public class Cities implements Serializable {
 
-    @ApiModelProperty(notes = "Unique identifier for city", required = true)
+    @ApiModelProperty(notes = "Unique identifier for location", required = true)
     @Id
     private String id;
-    @ApiModelProperty(notes = "Name of the city",required = true)
+    @ApiModelProperty(notes = "Name of the location",required = true)
     @Column
     private String cityName;
-    @ApiModelProperty(notes = "Name of the country")
+    @ApiModelProperty(notes = "Country code")
     @Column
     private String country;
-    @ApiModelProperty(notes = "Temperature in the city")
+    @ApiModelProperty(notes = "Temperature in location")
     @Column
     private double temp;
     @ApiModelProperty(notes = "Time of sunrise")
