@@ -5,9 +5,31 @@
             <pattern>%d{HH:mm:ss.SSS} {$thread} %-5level logger{35} - %msg %n</pattern>
         </encoder>
     </appender>
-    <logger name="com.accenture.weatherForecastWebsite.old.weatherAPI.WeatherForecastWebsiteApplication" level="debug"/>
+
+    <appender name="LOG_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <Pattern>
+                %d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n
+            </Pattern>
+        </encoder>
+
+        <!-- rollover daily -->
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>Forecast.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>100MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+        </rollingPolicy>
+    </appender>
+
+    <logger name="com.accenture.weatherForecastWebsite" level="INFO">
+        <appender-ref ref="LOG_FILE"/>
+        <appender-ref ref="STDOUT"/>
+    </logger>
+
     <root level="INFO">
-        <appender-ref ref="STDOUT"></appender-ref>
+        <appender-ref ref="STDOUT"/>
     </root>
+
 </configuration>
 
