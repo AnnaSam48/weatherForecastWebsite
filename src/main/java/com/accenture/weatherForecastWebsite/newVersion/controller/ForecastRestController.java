@@ -5,6 +5,7 @@ import com.accenture.weatherForecastWebsite.newVersion.repository.ForecastsByCit
 import com.accenture.weatherForecastWebsite.newVersion.weatherAPI.WeatherAPIService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 
@@ -25,8 +26,23 @@ public class ForecastRestController {
     }
 
     private Cities findByCityName(String cityName) {
-        Cities forecast = weatherAPIService.getForecastByCity(cityName);
-        return forecast;
+        Cities matchedLocation = forecastsByCityRepository.findByCityName(cityName);
+        if (matchedLocation != null) {
+            Timestamp lastUpdateRaw = matchedLocation.getTimestamp();
+            long lastUpdateTime = Long.parseLong(lastUpdateRaw.toString());
+            long currentTimeMinusH = System.currentTimeMillis() - (60 * 60 * 1000);
+            if (lastUpdateTime < currentTimeMinusH) {
+                return matchedLocation;
+            } else {
+                Cities forecast = weatherAPIService.getForecastByCity(cityName);
+                return forecast;
+            }
+
+        } else {
+            Cities forecast = weatherAPIService.getForecastByCity(cityName);
+            return forecast;
+        }
+
     }
 
     @PostMapping(value = "/{cityName}")
@@ -55,8 +71,8 @@ public class ForecastRestController {
             long currentTimeMinusH = System.currentTimeMillis() - (60 * 60 * 1000);
 
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd.MM.yyyy");
-            String currentDate=simpleDateFormat.format(currentTime);
-            String lastUpdateDate=simpleDateFormat.format(lastUpdateTime);
+            String currentDate = simpleDateFormat.format(currentTime);
+            String lastUpdateDate = simpleDateFormat.format(lastUpdateTime);
 
             if (lastUpdateTime < currentTimeMinusH || lastUpdateTime == currentTimeMinusH) {
 
@@ -64,12 +80,12 @@ public class ForecastRestController {
                 matchedLocation.setTimestamp(currentTime);
                 //API updates information in their db in every 2h, as we don't know at what time, we update every 1h, to get more precise data
 
-                if (currentDate!=lastUpdateDate) {
+                if (currentDate != lastUpdateDate) {
                     //last update didn't happen today
                     matchedLocation.setSunrise(cityForUpdate.getSunrise());
                     matchedLocation.setSunset(cityForUpdate.getSunset());
                     matchedLocation.setTemp(cityForUpdate.getTemp());
-                }else {//last update is older than 1 h
+                } else {//last update is older than 1 h
                     matchedLocation.setTemp(cityForUpdate.getTemp());
                     System.out.println("city was updated today, but not in last hour");
                 }
@@ -95,7 +111,8 @@ public class ForecastRestController {
             // ID + name + country + lon/lat
             // sunrise + sunset table updates not more than once in day
             // temp and timestamp should be updated every two h + could add wind/clouds
-
+            //add time zone in sun set sun rise + UTC= then convert
+            //
               */
  /*
             //TODO
