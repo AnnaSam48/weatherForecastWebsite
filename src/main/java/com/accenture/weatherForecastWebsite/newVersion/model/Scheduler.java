@@ -1,17 +1,20 @@
 package com.accenture.weatherForecastWebsite.newVersion.model;
 
+import com.accenture.weatherForecastWebsite.WeatherForecastWebsiteApplication;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import java.text.SimpleDateFormat;
-
+/*
 @Component
 @EnableScheduling
 public class Scheduler {
-    public static final SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
 
     //cron expression telling how often needs to execute
     @Scheduled(cron = "${update.cache.cron.start}")
@@ -28,3 +31,4 @@ public class Scheduler {
         System.out.println("Cache cleared...");
     }
 }
+*/

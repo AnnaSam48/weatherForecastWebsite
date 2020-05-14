@@ -1,6 +1,8 @@
 package com.accenture.weatherForecastWebsite.newVersion.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import org.hibernate.annotations.CreationTimestamp;
 
 import org.hibernate.validator.constraints.Length;
@@ -10,25 +12,27 @@ import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
 import java.sql.Timestamp;
 
+@ApiModel(description = "City's weather forecast details")
 @Entity
 public class Cities implements Serializable {
+
+    @ApiModelProperty(notes = "Unique identifier for city", required = true)
     @Id
-    @NotEmpty(message = "Please provide city Id")
     private String id;
+    @ApiModelProperty(notes = "Name of the city",required = true)
     @Column
-    @Length(min=1, max=200)
-    @NotEmpty(message = "Please type in desired location.")
     private String cityName;
+    @ApiModelProperty(notes = "Name of the country")
     @Column
     private String country;
+    @ApiModelProperty(notes = "Temperature in the city")
     @Column
-    @NotEmpty
     private double temp;
+    @ApiModelProperty(notes = "Time of sunrise")
     @Column
-    @NotEmpty
     private String sunrise; //milisec
+    @ApiModelProperty(notes = "Time of sunset")
     @Column
-    @NotEmpty
     private String sunset; //milisec
 
     @CreationTimestamp

@@ -3,6 +3,8 @@ package com.accenture.weatherForecastWebsite.newVersion.controller;
 import com.accenture.weatherForecastWebsite.newVersion.model.Cities;
 import com.accenture.weatherForecastWebsite.newVersion.repository.ForecastsByCityRepository;
 import com.accenture.weatherForecastWebsite.newVersion.weatherAPI.WeatherAPIService;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import java.sql.Timestamp;
@@ -20,7 +22,14 @@ public class ForecastRestController {
 
 
     @GetMapping(value = "/{cityName}", produces = "application/json")
-    public Cities getForecast(@PathVariable String cityName) {
+    @ApiOperation(value = "Finds city forecast by user's input city name.",
+            notes = "Provide valid city name to look up city's weather forecast. " +
+                    "Max input length is 189 characters (spaces included).",
+            httpMethod = "GET",
+            produces = "application/json",
+            response = Cities.class)
+    public Cities getForecast(@ApiParam(value = "Name of a ciy you want to find",
+            required = true) @PathVariable String cityName) {
         return findByCityName(cityName);
     }
 
@@ -30,6 +39,8 @@ public class ForecastRestController {
     }
 
     @PostMapping(value = "/{cityName}")
+    @ApiOperation(value = "Stores forecast by user's input city name in H2 database.",
+            httpMethod = "POST")
     public Cities setForecast(@PathVariable String cityName) {
         Cities matchedLocation = forecastsByCityRepository.findByCityName(cityName);
         long currentTimeRaw = System.currentTimeMillis();
@@ -51,7 +62,7 @@ public class ForecastRestController {
         } else {
             String matchedLocationId = matchedLocation.getId();
             Timestamp lastUpdateRaw = matchedLocation.getTimestamp();
-            long lastUpdateTime = Long.parseLong(lastUpdateRaw.toString());
+            long lastUpdateTime = Long.parseLong(String.valueOf(lastUpdateRaw));
             long currentTimeMinusH = System.currentTimeMillis() - (60 * 60 * 1000);
 
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd.MM.yyyy");
