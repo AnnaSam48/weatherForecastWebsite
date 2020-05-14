@@ -107,13 +107,13 @@ public class WeatherAPIService {
 
             JsonNode childSunrise = child.get("sunrise");
             Long sunriseUnix = childSunrise.asLong();
-            Date sunriseRaw = new java.util.Date(sunriseUnix*1000L);
+            Date sunriseRaw = new java.util.Date(sunriseUnix * 1000L);
             SimpleDateFormat simpleDateFormat = new java.text.SimpleDateFormat("HH:mm");
             String sunrise = simpleDateFormat.format(sunriseRaw);
 
             JsonNode childSunset = child.get("sunset");
             Long sunsetUnix = childSunset.asLong();
-            Date sunsetRaw = new java.util.Date(sunsetUnix*1000L);
+            Date sunsetRaw = new java.util.Date(sunsetUnix * 1000L);
             String sunset = simpleDateFormat.format(sunsetRaw);
 
             JsonNode childMain = node.get("main");
@@ -138,7 +138,7 @@ public class WeatherAPIService {
 
     }
 
-    @Caching(cacheable = @Cacheable(value ="city", key="#userInput"))
+    @Cacheable(value = "city", key = "#userInput")
     public Cities getForecastByCity(String userInput) {
 
         String requestedLocation = prepareLocationName(userInput);
@@ -159,22 +159,22 @@ public class WeatherAPIService {
             JsonNode child = node.get("sys");
             JsonNode childCountry = child.get("country");
             String country = null;
-            if(childCountry==null){
+            if (childCountry == null) {
                 country = "No one owns it!";
-            }else{
+            } else {
                 country = childCountry.asText();
             }
 
 
             JsonNode childSunrise = child.get("sunrise");
             Long sunriseUnix = childSunrise.asLong();
-            Date sunriseRaw = new java.util.Date(sunriseUnix*1000L);
+            Date sunriseRaw = new java.util.Date(sunriseUnix * 1000L);
             SimpleDateFormat simpleDateFormat = new java.text.SimpleDateFormat("HH:mm");
             String sunrise = simpleDateFormat.format(sunriseRaw);
 
             JsonNode childSunset = child.get("sunset");
             Long sunsetUnix = childSunset.asLong();
-            Date sunsetRaw = new java.util.Date(sunsetUnix*1000L);
+            Date sunsetRaw = new java.util.Date(sunsetUnix * 1000L);
             String sunset = simpleDateFormat.format(sunsetRaw);
 
             JsonNode childMain = node.get("main");
