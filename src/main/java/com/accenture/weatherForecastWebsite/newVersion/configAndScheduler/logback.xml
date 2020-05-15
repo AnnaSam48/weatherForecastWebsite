@@ -22,7 +22,7 @@
         </rollingPolicy>
     </appender>
 
-    <logger name="com.accenture.weatherForecastWebsite" level="INFO">
+    <logger name="com.accenture.weatherForecastWebsite" level="INFO" additivity="false">
         <appender-ref ref="LOG_FILE"/>
         <appender-ref ref="STDOUT"/>
     </logger>
