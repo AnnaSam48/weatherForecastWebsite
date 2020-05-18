@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 @Component
 @EnableScheduling
 public class Scheduler {
-
+/*
     //cron expression telling how often cache update needs to execute
     @Scheduled(cron = "${update.cache.cron.start}")
     @CachePut(value ="city")
@@ -26,4 +26,6 @@ public class Scheduler {
     {
         System.out.println("Cache cleared...");
     }
+
+ */
 }

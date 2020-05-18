@@ -1,15 +1,22 @@
 package com.accenture.weatherForecastWebsite.newVersion.controller;
 
+import com.accenture.weatherForecastWebsite.newVersion.exceptions.ForecastNotFoundException;
 import com.accenture.weatherForecastWebsite.newVersion.model.Cities;
 import com.accenture.weatherForecastWebsite.newVersion.repository.ForecastsByCityRepository;
 import com.accenture.weatherForecastWebsite.newVersion.weatherAPI.WeatherAPIService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
+
+import javax.servlet.http.HttpServletResponse;
 import java.sql.Date;
 import java.sql.Timestamp;
 
 @RestController
 @RequestMapping("forecast")
+
 public class ForecastRestController {
     @Autowired
     ForecastsByCityRepository forecastsByCityRepository;
@@ -18,9 +25,16 @@ public class ForecastRestController {
     WeatherAPIService weatherAPIService;
 
     @GetMapping(value = "/{cityName}", produces = "application/json")
-    public Cities getForecast(@PathVariable String cityName) {
-        return findByCityName(cityName);
+    public Cities getForecast(@PathVariable String cityName, HttpServletResponse response) {
+        try {
+            return findByCityName(cityName);
+        }
+        catch (ForecastNotFoundException exc) {
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND, "City Not Found");
+        }
     }
+
 
     private Cities findByCityName(String cityName) {
         Cities matchedLocation = forecastsByCityRepository.findByCityName(cityName);
@@ -41,6 +55,11 @@ public class ForecastRestController {
         }
 
     }
+
+
+
+
+
 
     @PostMapping(value = "/{cityName}")
     public Cities setForecast(@PathVariable String cityName) {
@@ -91,10 +110,6 @@ public class ForecastRestController {
         }
     }
 }
-
-
-
-
 
       /*
             //TODO
