@@ -6,10 +6,7 @@ import com.accenture.weatherForecastWebsite.newVersion.model.Cities;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.cache.annotation.Caching;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.HttpClientErrorException;
 
@@ -51,7 +48,7 @@ public class WeatherAPIService {
 
 
     private String userLocation = latitude + String.format("%12.3f", latNumbers) + longitude + String.format("%12.3f", lonNumbers);    //lat={lat}&lon={lon}
-   //TODO to string probably in place of this^^^
+   //TODO to string probably in place of this^^^ //initial
 */
 
     private String prepareLocationName(String locationName) {
@@ -85,7 +82,7 @@ public class WeatherAPIService {
        /* StringBuilder content = new StringBuilder();
         return bufferedReader.lines()
                 .collect(Collectors.joining(System.lineSeparator()));
-//TODO put in try cycle for   bufferedReader.close();!!!
+//TODO put in try cycle for   bufferedReader.close();!!! //initial
 
         */
     }
@@ -217,8 +214,8 @@ public class WeatherAPIService {
         }
 
     }
-    //TODO          Make classes for conversions date/Kelvin and all the rest ones
-    //TODO          Make fields that are identical as one
+    //TODO          Make classes for conversions date/Kelvin and all the rest ones//initial
+    //TODO          Make fields that are identical as one //initial
 
 
 }
