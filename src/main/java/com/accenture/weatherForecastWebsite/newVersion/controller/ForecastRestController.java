@@ -8,8 +8,6 @@ import org.springframework.web.bind.annotation.*;
 import java.sql.Date;
 import java.sql.Timestamp;
 
-
-
 @RestController
 @RequestMapping("forecast")
 public class ForecastRestController {
@@ -18,7 +16,6 @@ public class ForecastRestController {
 
     @Autowired
     WeatherAPIService weatherAPIService;
-
 
     @GetMapping(value = "/{cityName}", produces = "application/json")
     public Cities getForecast(@PathVariable String cityName) {
