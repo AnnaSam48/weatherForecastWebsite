@@ -5,8 +5,8 @@ import com.accenture.weatherForecastWebsite.newVersion.model.Cities;
 import com.accenture.weatherForecastWebsite.newVersion.repository.ForecastsByCityRepository;
 import com.accenture.weatherForecastWebsite.newVersion.weatherAPI.WeatherAPIService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -18,8 +18,9 @@ import java.sql.Timestamp;
 @RequestMapping("forecast")
 
 public class ForecastRestController {
-    @Autowired
-    ForecastsByCityRepository forecastsByCityRepository;
+
+   @Autowired
+   ForecastsByCityRepository forecastsByCityRepository;
 
     @Autowired
     WeatherAPIService weatherAPIService;
@@ -52,18 +53,13 @@ public class ForecastRestController {
         } else {
             Cities forecast = weatherAPIService.getForecastByCity(cityName);
             return forecast;
-        }
+       }
 
     }
 
-
-
-
-
-
-    @PostMapping(value = "/{cityName}")
+    @PostMapping(value = "/{cityName}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = "application/json" )
     public Cities setForecast(@PathVariable String cityName) {
-        Cities matchedLocation = forecastsByCityRepository.findByCityName(cityName);
+       Cities matchedLocation = forecastsByCityRepository.findByCityName(cityName);
         Timestamp currentTime = new Timestamp(System.currentTimeMillis());
 
         if (matchedLocation == null) {
