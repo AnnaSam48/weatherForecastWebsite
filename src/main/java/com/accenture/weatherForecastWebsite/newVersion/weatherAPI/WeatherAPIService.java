@@ -1,5 +1,6 @@
 package com.accenture.weatherForecastWebsite.newVersion.weatherAPI;
 
+import com.accenture.weatherForecastWebsite.newVersion.exceptions.ForecastNotFoundException;
 import com.accenture.weatherForecastWebsite.newVersion.model.Cities;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -9,6 +10,7 @@ import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.annotation.Caching;
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.HttpClientErrorException;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
@@ -95,7 +97,8 @@ public class WeatherAPIService {
             ObjectMapper objectMapper = new ObjectMapper();
 
             JsonNode node = objectMapper.readValue(JsonResponse, JsonNode.class);
-            JsonNode idNode = node.get("id");
+                JsonNode idNode = node.get("id");
+
             String id = idNode.asText();
 
             JsonNode cityNameNode = node.get("name");
@@ -133,7 +136,7 @@ public class WeatherAPIService {
 
         } catch (Exception e) {
             e.printStackTrace();
-            throw new RuntimeException();
+            throw new ForecastNotFoundException();
         }
 
     }
@@ -151,6 +154,7 @@ public class WeatherAPIService {
 
             JsonNode node = objectMapper.readValue(JsonResponse, JsonNode.class);
             JsonNode idNode = node.get("id");
+
             String id = idNode.asText();
 
             JsonNode cityNameNode = node.get("name");
@@ -195,8 +199,7 @@ public class WeatherAPIService {
 
         } catch (Exception e) {
             e.printStackTrace();
-            throw new RuntimeException();
-
+            throw new ForecastNotFoundException();
         }
 
     }
