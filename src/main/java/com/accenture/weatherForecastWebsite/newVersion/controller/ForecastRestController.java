@@ -5,7 +5,6 @@ import com.accenture.weatherForecastWebsite.newVersion.model.Cities;
 import com.accenture.weatherForecastWebsite.newVersion.repository.ForecastsByCityRepository;
 import com.accenture.weatherForecastWebsite.newVersion.weatherAPI.WeatherAPIService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
@@ -14,9 +13,9 @@ import javax.servlet.http.HttpServletResponse;
 import java.sql.Date;
 import java.sql.Timestamp;
 
+
 @RestController
 @RequestMapping("forecast")
-
 public class ForecastRestController {
     @Autowired
     ForecastsByCityRepository forecastsByCityRepository;
@@ -24,15 +23,10 @@ public class ForecastRestController {
     @Autowired
     WeatherAPIService weatherAPIService;
 
+
     @GetMapping(value = "/{cityName}", produces = "application/json")
-    public Cities getForecast(@PathVariable String cityName, HttpServletResponse response) {
-        try {
+    public Cities getForecast(@PathVariable String cityName) {
             return findByCityName(cityName);
-        }
-        catch (ForecastNotFoundException exc) {
-            throw new ResponseStatusException(
-                    HttpStatus.NOT_FOUND, "City Not Found");
-        }
     }
 
 
@@ -55,11 +49,6 @@ public class ForecastRestController {
         }
 
     }
-
-
-
-
-
 
     @PostMapping(value = "/{cityName}")
     public Cities setForecast(@PathVariable String cityName) {
@@ -89,8 +78,8 @@ public class ForecastRestController {
                 Cities cityForUpdate = weatherAPIService.getForecastByCityID(matchedLocationId);
                 matchedLocation.setTimestamp(currentTime);
                 //API updates information in their db in every 2h, as we don't know at what time, we update every 1h, to get more precise data
-                Date today=new Date(System.currentTimeMillis());
-                if(lastTimeUpdate.before(today)){
+                Date today = new Date(System.currentTimeMillis());
+                if (lastTimeUpdate.before(today)) {
                     //last update didn't happen today
                     matchedLocation.setSunrise(cityForUpdate.getSunrise());
                     matchedLocation.setSunset(cityForUpdate.getSunset());

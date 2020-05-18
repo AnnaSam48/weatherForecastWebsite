@@ -1,5 +1,6 @@
 package com.accenture.weatherForecastWebsite.newVersion.weatherAPI;
 
+import com.accenture.weatherForecastWebsite.newVersion.exceptions.APiError;
 import com.accenture.weatherForecastWebsite.newVersion.exceptions.ForecastNotFoundException;
 import com.accenture.weatherForecastWebsite.newVersion.model.Cities;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.HttpClientErrorException;
 
 import java.io.BufferedReader;
+import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
@@ -97,7 +99,10 @@ public class WeatherAPIService {
             ObjectMapper objectMapper = new ObjectMapper();
 
             JsonNode node = objectMapper.readValue(JsonResponse, JsonNode.class);
-                JsonNode idNode = node.get("id");
+            JsonNode idNode = node.get("id");
+            if (idNode == null) {
+                throw new IllegalArgumentException();
+            }
 
             String id = idNode.asText();
 
@@ -134,9 +139,12 @@ public class WeatherAPIService {
 
             return forecast;
 
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            throw new IllegalArgumentException();
         } catch (Exception e) {
             e.printStackTrace();
-            throw new ForecastNotFoundException();
+            throw new RuntimeException();
         }
 
     }
@@ -154,6 +162,9 @@ public class WeatherAPIService {
 
             JsonNode node = objectMapper.readValue(JsonResponse, JsonNode.class);
             JsonNode idNode = node.get("id");
+            if (idNode == null) {
+                throw new IllegalArgumentException();
+            }
 
             String id = idNode.asText();
 
@@ -197,9 +208,12 @@ public class WeatherAPIService {
             return forecast;
 
 
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            throw new IllegalArgumentException();
         } catch (Exception e) {
             e.printStackTrace();
-            throw new ForecastNotFoundException();
+            throw new NullPointerException();
         }
 
     }
