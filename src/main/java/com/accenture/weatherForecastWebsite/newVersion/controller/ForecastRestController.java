@@ -1,15 +1,13 @@
 package com.accenture.weatherForecastWebsite.newVersion.controller;
 
-import com.accenture.weatherForecastWebsite.newVersion.exceptions.ForecastNotFoundException;
 import com.accenture.weatherForecastWebsite.newVersion.model.Cities;
 import com.accenture.weatherForecastWebsite.newVersion.repository.ForecastsByCityRepository;
 import com.accenture.weatherForecastWebsite.newVersion.weatherAPI.WeatherAPIService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 
-import javax.servlet.http.HttpServletResponse;
 import java.sql.Date;
 import java.sql.Timestamp;
 
@@ -17,6 +15,9 @@ import java.sql.Timestamp;
 @RestController
 @RequestMapping("forecast")
 public class ForecastRestController {
+
+    Logger logger = LoggerFactory.getLogger(ForecastRestController.class);
+
     @Autowired
     ForecastsByCityRepository forecastsByCityRepository;
 
@@ -29,21 +30,24 @@ public class ForecastRestController {
             return findByCityName(cityName);
     }
 
-
     private Cities findByCityName(String cityName) {
         Cities matchedLocation = forecastsByCityRepository.findByCityName(cityName);
         if (matchedLocation != null) {
+            logger.info("Data found in database for this city.");
             Timestamp lastTimeUpdate = matchedLocation.getTimestamp();
             Timestamp currentTimeMinusHour = new Timestamp((System.currentTimeMillis() - (60 * 60 * 1000)));
+            logger.info("Checking the timestamp");
 
             if (lastTimeUpdate.after(currentTimeMinusHour)) {
                 return matchedLocation;
             } else {
+                logger.info("Data given from database");
                 Cities forecast = weatherAPIService.getForecastByCity(cityName);
                 return forecast;
             }
 
         } else {
+            logger.info("Data given from API");
             Cities forecast = weatherAPIService.getForecastByCity(cityName);
             return forecast;
         }
@@ -52,10 +56,12 @@ public class ForecastRestController {
 
     @PostMapping(value = "/{cityName}")
     public Cities setForecast(@PathVariable String cityName) {
+        logger.info("Adding data to database");
         Cities matchedLocation = forecastsByCityRepository.findByCityName(cityName);
         Timestamp currentTime = new Timestamp(System.currentTimeMillis());
 
         if (matchedLocation == null) {
+            logger.info("Adding data about new location");
             Cities getNewCity = weatherAPIService.getForecastByCity(cityName);
             Cities cityToAdd = new Cities();
             cityToAdd.setId(getNewCity.getId());
@@ -70,6 +76,7 @@ public class ForecastRestController {
             return cityToAdd;
         } else {
             String matchedLocationId = matchedLocation.getId();
+            logger.info("Data found in database updating");
 
             Timestamp lastTimeUpdate = matchedLocation.getTimestamp();
             Timestamp currentTimeMinusHour = new Timestamp((System.currentTimeMillis() - (60 * 60 * 1000)));
@@ -81,12 +88,13 @@ public class ForecastRestController {
                 Date today = new Date(System.currentTimeMillis());
                 if (lastTimeUpdate.before(today)) {
                     //last update didn't happen today
+                    logger.info("Updating info... not updated today");
                     matchedLocation.setSunrise(cityForUpdate.getSunrise());
                     matchedLocation.setSunset(cityForUpdate.getSunset());
                     matchedLocation.setTemp(cityForUpdate.getTemp());
                 } else {//last update is older than 1 h
+                    logger.info("Updating info... not updated in last hour");
                     matchedLocation.setTemp(cityForUpdate.getTemp());
-                    System.out.println("city was updated today, but not in last hour");
                 }
                 forecastsByCityRepository.save(matchedLocation);
             } else {
