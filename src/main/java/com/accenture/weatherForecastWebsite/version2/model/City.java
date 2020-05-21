@@ -9,11 +9,11 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
-import org.springframework.data.annotation.Transient;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Transient;
 import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Map;
@@ -54,24 +54,26 @@ public class City implements Serializable {
 
     @CreationTimestamp
     @JsonIgnore
+    @Column
     private Timestamp timestamp;
 
 
     //fields not stored in database
-    @Transient
-    @JsonIgnore
-    private int timeZone; //UNIX time shift
 
-    @Transient
     @JsonIgnore
-    private int sunriseOfTheLocation; //UNIX
+            @Transient
+    int timeZone; //UNIX time shift UTC
 
-    @Transient
     @JsonIgnore
-    private int sunSetOfTheLocation; //UNIX
+    @Transient
+    private int sunriseOfTheLocation; //UNIX UTC
 
-    @Transient
     @JsonIgnore
+    @Transient
+    private int sunSetOfTheLocation; //UNIX UTC
+
+    @JsonIgnore
+    @Transient
     private double temp; //temperature in K raw
 
 
@@ -102,7 +104,7 @@ public class City implements Serializable {
         this.id = id;
         this.cityName = cityName;
         this.country = country;
-        this.temperature= temperature;
+        this.temperature = temperature;
         this.sunrise = sunrise;
         this.sunset = sunset;
     }
@@ -137,9 +139,8 @@ public class City implements Serializable {
     }
 
     public double getTemperature() {
-        TemperatureConverter temperatureConverter=new TemperatureConverter();
-
-        double temperature= temperatureConverter.getCelsiusFormKelvin(temp);
+        TemperatureConverter temperatureConverter = new TemperatureConverter();
+        double temperature = temperatureConverter.getCelsiusFormKelvin(temp);
         return temperature;
     }
 
@@ -149,7 +150,7 @@ public class City implements Serializable {
 
     public String getSunrise() {
         DateConverter dateConverter = new DateConverter();
-        sunrise = dateConverter.getDateFormUnx(sunriseOfTheLocation+timeZone-10800);
+        sunrise = dateConverter.getDateFormUnx(sunriseOfTheLocation + timeZone);
         return sunrise;
     }
 
@@ -160,7 +161,7 @@ public class City implements Serializable {
 
     public String getSunset() {
         DateConverter dateConverter = new DateConverter();
-        sunset = dateConverter.getDateFormUnx(sunSetOfTheLocation+timeZone-10800);
+        sunset = dateConverter.getDateFormUnx(sunSetOfTheLocation + timeZone);
         return sunset;
     }
 
