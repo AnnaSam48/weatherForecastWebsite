@@ -3,7 +3,6 @@ package com.accenture.weatherForecastWebsite.version2.ApiService;
 
 import com.accenture.weatherForecastWebsite.version2.model.City;
 import com.accenture.weatherForecastWebsite.version2.service.GetJsonResponseService;
-import com.accenture.weatherForecastWebsite.version2.service.PrepareLocationInput;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.annotation.Cacheable;
@@ -32,16 +31,15 @@ public class WeatherAPIService {
     @Autowired
     GetJsonResponseService getJsonResponseService;
 
-    @Autowired
-    PrepareLocationInput prepareLocationInput;
+
 
 
     @Cacheable(value = "city", key = "#userInput")
     public City getForecastByCity(String userInput) {
 
-        String requestedLocation = prepareLocationInput.prepareLocationName(userInput);
+
         try {
-            URL url = new URL(requestUrlBegin + prefixName + requestedLocation + apiKey);
+            URL url = new URL(requestUrlBegin + prefixName + userInput + apiKey);
             City jsonResponse = getJsonResponseService.getJsonResponse(url);
             return jsonResponse;
         } catch (Exception e) {
