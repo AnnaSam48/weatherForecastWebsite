@@ -71,17 +71,17 @@ public class ForecastRestController {
             Timestamp currentTimeMinusHour = new Timestamp((System.currentTimeMillis() - (60 * 60 * 1000)));
            if (currentTimeMinusHour.after(lastTimeUpdate)) {
                 //if last update is older than 1h
-             //  City cityForUpdate = weatherAPIService.getForecastByCityID(matchedLocationId);
+               City cityForUpdate = weatherAPIService.getForecastByCityID(matchedLocationId);
                matchedLocation.setTimestamp(currentTime);
                 //API updates information in their db in every 2h, as we don't know at what time, we update every 1h, to get more precise data
                 Date today=new Date(System.currentTimeMillis());
                 if(lastTimeUpdate.before(today)){
                     //last update didn't happen today
-             /*       matchedLocation.setSunrise(cityForUpdate.getSunrise());
+                    matchedLocation.setSunrise(cityForUpdate.getSunrise());
                     matchedLocation.setSunset(cityForUpdate.getSunset());
-                    matchedLocation.setTemperature(cityForUpdate.getTemperature()); */
+                    matchedLocation.setTemperature(cityForUpdate.getTemperature());
                 } else {//last update is older than 1 h
-                 //   matchedLocation.setTemperature(cityForUpdate.getTemperature());
+                    matchedLocation.setTemperature(cityForUpdate.getTemperature());
                     serviceLogger.info("Update not recent... Updating temperature");
                 }
                 forecastsByCityRepository.save(matchedLocation);

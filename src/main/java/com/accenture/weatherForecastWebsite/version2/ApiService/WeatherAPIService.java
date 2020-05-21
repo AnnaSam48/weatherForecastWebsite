@@ -27,7 +27,6 @@ public class WeatherAPIService {
     @Value("${weather.api.request.by.cityId}") //if we search in database, used right after requestUrlBegin
     private String prefixCityId;
 
-
     @Autowired
     GetJsonResponseService getJsonResponseService;
 
@@ -43,7 +42,7 @@ public class WeatherAPIService {
             URL url = new URL(requestUrlBegin + prefixName + requestedLocation + apiKey);
             City jsonResponse = getJsonResponseService.getJsonResponse(url);
             return jsonResponse;
-        } catch (Exception e) {
+        }catch (Exception e) {
             e.printStackTrace();
             throw new RuntimeException();
         }
