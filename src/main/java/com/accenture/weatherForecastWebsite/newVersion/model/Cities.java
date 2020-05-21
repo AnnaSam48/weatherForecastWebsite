@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import org.hibernate.annotations.CreationTimestamp;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.sql.Timestamp;
@@ -15,7 +16,7 @@ public class Cities implements Serializable {
     @ApiModelProperty(notes = "Unique identifier for location", required = true)
     @Id
     private String id;
-    @ApiModelProperty(notes = "Name of the location",required = true)
+    @ApiModelProperty(notes = "Name of the location", required = true)
     @Column
     private String cityName;
     @ApiModelProperty(notes = "Country code")
@@ -44,8 +45,8 @@ public class Cities implements Serializable {
         this.sunset = sunset;
     }
 
-    public Cities(){}
-
+    public Cities() {
+    }
 
 
     public String getId() {
