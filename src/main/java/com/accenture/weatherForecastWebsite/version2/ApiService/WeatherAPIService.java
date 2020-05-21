@@ -25,6 +25,10 @@ public class WeatherAPIService {
     @Value("${weather.api.request.by.name}") //if user input is name, used right after requestUrlBegin
     private String prefixName;
 
+    @Value("${weather.api.request.by.cityId}") //if we search in database, used right after requestUrlBegin
+    private String prefixCityId;
+
+
     @Autowired
     GetJsonResponseService getJsonResponseService;
 
@@ -40,7 +44,20 @@ public class WeatherAPIService {
             URL url = new URL(requestUrlBegin + prefixName + requestedLocation + apiKey);
             City jsonResponse = getJsonResponseService.getJsonResponse(url);
             return jsonResponse;
-        }catch (Exception e) {
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException();
+        }
+    }
+
+    @Cacheable(value = "city", key = "#cityID")
+    public City getForecastByCityID(String cityID) {
+
+        try {
+            URL url = new URL(requestUrlBegin + prefixCityId + cityID + apiKey);
+            City jsonResponse = getJsonResponseService.getJsonResponse(url);
+            return jsonResponse;
+        } catch (Exception e) {
             e.printStackTrace();
             throw new RuntimeException();
         }
