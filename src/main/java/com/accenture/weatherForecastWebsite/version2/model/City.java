@@ -61,7 +61,7 @@ public class City implements Serializable {
     //fields not stored in database
 
     @JsonIgnore
-            @Transient
+    @Transient
     int timeZone; //UNIX time shift UTC
 
     @JsonIgnore
@@ -145,7 +145,7 @@ public class City implements Serializable {
     }
 
     public void setTemperature(double temperature) {
-        this.temperature = temp;
+        this.temperature = temperature;
     }
 
     public String getSunrise() {
