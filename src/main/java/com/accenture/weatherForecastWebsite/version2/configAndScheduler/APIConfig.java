@@ -1,4 +1,4 @@
-package com.accenture.weatherForecastWebsite.newVersion.configAndScheduler;
+package com.accenture.weatherForecastWebsite.version2.configAndScheduler;
 
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;

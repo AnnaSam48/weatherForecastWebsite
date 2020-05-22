@@ -14,8 +14,4 @@ public class WeatherForecastWebsiteApplication {
         SpringApplication.run(WeatherForecastWebsiteApplication.class, args);
     }
 
-    @Bean
-    WebClient.Builder getWebClientBuilder() {
-        return WebClient.builder();
-    }
 }

@@ -1,18 +1,17 @@
 package com.accenture.weatherForecastWebsite.version2.ApiService;
 
-
 import com.accenture.weatherForecastWebsite.version2.model.City;
 import com.accenture.weatherForecastWebsite.version2.service.GetJsonResponseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.stereotype.Component;
-
+import org.springframework.stereotype.Service;
 
 import java.net.URL;
 
-
-@Component
+@CacheConfig(cacheNames = "cityCache")
+@Service
 public class WeatherAPIService {
 
     @Value("${weather.api.request}") //beginning of API request link
@@ -27,14 +26,13 @@ public class WeatherAPIService {
     @Value("${weather.api.request.by.cityId}") //if we search in database, used right after requestUrlBegin
     private String prefixCityId;
 
-
     @Autowired
     GetJsonResponseService getJsonResponseService;
 
 
 
 
-    @Cacheable(value = "city", key = "#userInput")
+    @Cacheable(cacheNames = "findByCityName", key = "#userInput")
     public City getForecastByCity(String userInput) {
 
 
@@ -42,7 +40,7 @@ public class WeatherAPIService {
             URL url = new URL(requestUrlBegin + prefixName + userInput + apiKey);
             City jsonResponse = getJsonResponseService.getJsonResponse(url);
             return jsonResponse;
-        } catch (Exception e) {
+        }catch (Exception e) {
             e.printStackTrace();
             throw new RuntimeException();
         }
