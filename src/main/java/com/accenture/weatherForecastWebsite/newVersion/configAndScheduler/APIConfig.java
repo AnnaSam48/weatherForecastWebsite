@@ -3,6 +3,7 @@ package com.accenture.weatherForecastWebsite.newVersion.configAndScheduler;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.reactive.function.client.WebClient;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.service.ApiInfo;
@@ -17,6 +18,13 @@ import java.util.Collections;
 @EnableCaching
 public class APIConfig {
 
+    //Web Client builder
+    @Bean
+    WebClient.Builder getWebClientBuilder() {
+        return WebClient.builder();
+    }
+
+    //Swagger documentation configuration
     @Bean
     public Docket swaggerConfiguration(){
 
@@ -34,7 +42,7 @@ public class APIConfig {
         return new ApiInfo("Weather Forecast API",
                 "Simple Weather forecast API, that lets user check the current weather " +
                         "forecast for the city user wants to know about.",
-                "1.0",
+                "2.0",
                 "Free to use",
                 new springfox.documentation.service.Contact("Weather Forecast Team",
                         "http://weatherAtAwsomePlace.com","OurSuperE@mail.com"),

@@ -1,9 +1,6 @@
 package com.accenture.weatherForecastWebsite.newVersion.configAndScheduler;
 
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.CachePut;
 import org.springframework.scheduling.annotation.EnableScheduling;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 

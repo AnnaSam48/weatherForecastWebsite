@@ -6,7 +6,7 @@ import com.accenture.weatherForecastWebsite.version2.ApiService.WeatherAPIServic
 import com.accenture.weatherForecastWebsite.version2.model.City;
 import com.accenture.weatherForecastWebsite.version2.repository.ForecastsByCityRepository;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.Timestamp;
@@ -45,9 +45,8 @@ public class ForecastRestController {
                 serviceLogger.info("Timestamp valid... Data returned from database...");
                 return matchedLocation;
             } else {
-                serviceLogger.info("Timestamp has expired... New forecast given from external API");
-                City forecast = weatherAPIService.getForecastByCity(cityName);
-                return forecast;
+                serviceLogger.info("Timestamp has expired... New forecast given from external API...");
+                return  weatherAPIService.getForecastByCity(cityName);
             }
 
         } else {
