@@ -38,16 +38,16 @@ public class ForecastRestController {
 
         serviceLogger.trace("Requesting forecast for " + cityName + "...");
         if (matchedLocation != null) {
-            serviceLogger.info("Forecast for " + cityName + " found in database...");
+            serviceLogger.trace("Forecast for " + cityName + " found in database...");
             Timestamp lastTimeUpdate = matchedLocation.getTimestamp();
             Timestamp currentTimeMinusHour = new Timestamp((System.currentTimeMillis() - (60 * 60 * 1000)));
             serviceLogger.info("Checking the timestamp...");
 
             if (lastTimeUpdate.after(currentTimeMinusHour)) {
-                serviceLogger.info("Data returned from database...");
+                serviceLogger.trace("Data returned from database...");
                 return matchedLocation;
             } else {
-                serviceLogger.info("Data retrieved from Api...");
+                serviceLogger.trace("Data retrieved from Api...");
                 City forecast = weatherAPIService.getForecastByCity(cityName);
                 return forecast;
             }
@@ -55,7 +55,7 @@ public class ForecastRestController {
         } else {
 
             City forecast = weatherAPIService.getForecastByCity(cityName);
-            serviceLogger.info("Data retrieved from Api...");
+            serviceLogger.trace("Data retrieved from Api...");
             return forecast;
 
         }
@@ -64,12 +64,12 @@ public class ForecastRestController {
 
     @PostMapping(value = "/{cityName}")
     public City setForecast(@PathVariable String cityName) {
-        serviceLogger.info("Posting data...");
+        serviceLogger.trace("Posting data...");
         City matchedLocation = forecastsByCityRepository.findByCityName(cityName);
         Timestamp currentTime = new Timestamp(System.currentTimeMillis());
 
         if (matchedLocation == null) {
-            serviceLogger.info("New location...");
+            serviceLogger.trace("New location...");
             City getNewCity = weatherAPIService.getForecastByCity(cityName);
             City cityToAdd = new City();
             cityToAdd.setId(getNewCity.getId());
@@ -80,17 +80,17 @@ public class ForecastRestController {
             cityToAdd.setSunset(getNewCity.getSunset());
             cityToAdd.setTimestamp(currentTime);
             forecastsByCityRepository.save(cityToAdd);
-            serviceLogger.info(cityName+" added in database...");
+            serviceLogger.trace(cityName+" added in database...");
             return cityToAdd;
         } else {
             String matchedLocationId = matchedLocation.getId();
-            serviceLogger.info("Data about " +cityName+" already found in database");
+            serviceLogger.trace("Data about " +cityName+" already found in database");
             Timestamp lastTimeUpdate = matchedLocation.getTimestamp();
             Timestamp currentTimeMinusHour = new Timestamp((System.currentTimeMillis() - (60 * 60 * 1000)));
 
             if (currentTimeMinusHour.after(lastTimeUpdate)) {
                 City cityForUpdate = weatherAPIService.getForecastByCityID(matchedLocationId);
-                serviceLogger.info("Data needs update...");
+                serviceLogger.trace("Data needs update...");
                 matchedLocation.setTimestamp(currentTime);
                 Date today = new Date(System.currentTimeMillis());
 
@@ -100,16 +100,16 @@ public class ForecastRestController {
 
                     matchedLocation.setSunrise(cityForUpdate.getSunrise());
                     matchedLocation.setSunset(cityForUpdate.getSunset());
-                    serviceLogger.info("Updating sunset, sunrise, temperature data...");
+                    serviceLogger.trace("Updating sunset, sunrise, temperature data...");
 
                 } else {
-                    serviceLogger.info("Updating temperature data...");
+                    serviceLogger.trace("Updating temperature data...");
                 }
                 matchedLocation.setTemperature(cityForUpdate.getTemperature());
-                serviceLogger.info("Update saved...");
+                serviceLogger.trace("Update saved...");
                 forecastsByCityRepository.save(matchedLocation);
             } else {
-                serviceLogger.info("No need for update, data up to date ");
+                serviceLogger.trace("No need for update, data up to date ");
                 return matchedLocation;
             }
             return matchedLocation;
