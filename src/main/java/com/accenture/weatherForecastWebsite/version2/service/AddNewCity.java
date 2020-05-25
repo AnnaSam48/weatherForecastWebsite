@@ -13,15 +13,15 @@ import org.springframework.stereotype.Component;
 import java.sql.Timestamp;
 
 @Component
-public class NewCity {
+public class AddNewCity {
     @Autowired
     WeatherAPIService weatherAPIService;
     @Autowired
     ForecastsByCityRepository forecastsByCityRepository;
 
-    Logger serviceLogger = LoggerFactory.getLogger(ForecastRestController.class);
+    Logger serviceLogger = LoggerFactory.getLogger(AddNewCity.class);
 
-    public City setCityToAdd(String cityToAdd) {
+    public City addNewCiy(String cityToAdd) {
 
         City getNewCity = weatherAPIService.getForecastByCity(cityToAdd);
         City newCity = new City();
@@ -35,7 +35,7 @@ public class NewCity {
         newCity.setTimestamp(currentTime);
         forecastsByCityRepository.save(newCity);
 
-        serviceLogger.trace(getNewCity.getCityName() + " added in database...");
+        serviceLogger.trace("New city "+ getNewCity.getCityName() + " added in database...");
         return newCity;
     }
 }
