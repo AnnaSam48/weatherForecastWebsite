@@ -1,6 +1,7 @@
 package com.accenture.weatherForecastWebsite.version2.controller;
 
 import com.accenture.weatherForecastWebsite.version2.model.City;
+import com.accenture.weatherForecastWebsite.version2.model.Forecast;
 import com.accenture.weatherForecastWebsite.version2.service.ForecastService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -16,7 +17,7 @@ public class ForecastRestController {
 
 
     @GetMapping(value = "/{cityName}", produces = "application/json")
-    public City getForecast(@PathVariable String cityName) {
+    public Forecast getForecast(@PathVariable String cityName) {
         return forecastService.findForecast(cityName);
     }
 
