@@ -1,6 +1,5 @@
 package com.accenture.weatherForecastWebsite.version2.service;
 
-import com.accenture.weatherForecastWebsite.version2.controller.ForecastRestController;
 import com.accenture.weatherForecastWebsite.version2.model.City;
 import com.accenture.weatherForecastWebsite.version2.repository.ForecastsByCityRepository;
 import org.slf4j.Logger;
@@ -10,6 +9,7 @@ import org.springframework.stereotype.Component;
 
 import java.sql.Date;
 import java.sql.Timestamp;
+import java.util.Optional;
 
 
 @Component
@@ -18,7 +18,7 @@ public class UpdateCity {
     WeatherAPIService weatherAPIService;
     @Autowired
     ForecastsByCityRepository forecastsByCityRepository;
-    Logger serviceLogger = LoggerFactory.getLogger(ForecastRestController.class);
+    Logger serviceLogger = LoggerFactory.getLogger(UpdateCity.class);
 
     public City updateCity(City cityToUpdate) {
 
@@ -31,21 +31,22 @@ public class UpdateCity {
 
         if (currentTimeMinusHour.after(lastTimeUpdate)) {
             City cityForUpdate = weatherAPIService.getForecastByCityID(matchedLocationId);
-            serviceLogger.trace("Data needs update...");
+            serviceLogger.trace("Data expired... Will update data...");
             cityToUpdate.setTimestamp(currentTime);
 
 
             Date today = new Date(System.currentTimeMillis());
             if (lastTimeUpdate.before(today)) {
+                serviceLogger.trace("Updating sunset and sunrise...");
                 cityToUpdate.setSunSetOfTheLocation(cityForUpdate.getSunSetOfTheLocation());
                 cityToUpdate.setSunriseOfTheLocation(cityForUpdate.getSunriseOfTheLocation());
-                serviceLogger.trace("Updating sunset and sunrise data...");
+
 
             }
-            serviceLogger.trace("Updating temperature data...");
+            serviceLogger.trace("Updating temperature...");
             cityToUpdate.setTemp(cityForUpdate.getTemp());
+            serviceLogger.trace("Saving data...");
             forecastsByCityRepository.save(cityToUpdate);
-            serviceLogger.trace("Update saved...");
 
 
         } else {

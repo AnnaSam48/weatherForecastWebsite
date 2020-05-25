@@ -1,24 +1,26 @@
 package com.accenture.weatherForecastWebsite.version2.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
 import org.springframework.stereotype.Component;
 
 @Component
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
 public class Forecast {
 
-
+    @ApiModelProperty(notes = "Name of city")
     @JsonProperty("City")
     private String cityName;
+    @ApiModelProperty(notes = "Country ")
     @JsonProperty("Country code")
     private String country;
+    @ApiModelProperty(notes = "Temperature")
     @JsonProperty("Temperature")
     private String temperature;
+    @ApiModelProperty(notes = "Time of sunrise")
     @JsonProperty("Sunrise")
     private String sunrise;
+    @ApiModelProperty(notes = "Time of sunset")
     @JsonProperty("Sunset")
     private String sunset;
 

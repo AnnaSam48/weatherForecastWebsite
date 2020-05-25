@@ -18,9 +18,9 @@ public class AddNewCity {
     @Autowired
     ForecastsByCityRepository forecastsByCityRepository;
 
-    Logger serviceLogger = LoggerFactory.getLogger(ForecastRestController.class);
+    Logger serviceLogger = LoggerFactory.getLogger(AddNewCity.class);
 
-    public City addNewCiy(String cityToAdd) {
+    public City addNewCity(String cityToAdd) {
 
         City getNewCity = weatherAPIService.getForecastByCity(cityToAdd);
         City newCity = new City();
