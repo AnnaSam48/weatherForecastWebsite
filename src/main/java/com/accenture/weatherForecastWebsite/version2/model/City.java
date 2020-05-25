@@ -1,25 +1,26 @@
 package com.accenture.weatherForecastWebsite.version2.model;
 
-import com.accenture.weatherForecastWebsite.version2.converters.DateConverter;
-import com.accenture.weatherForecastWebsite.version2.converters.TemperatureConverter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
-
+import org.springframework.stereotype.Component;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.Transient;
 import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Map;
 
+@Component
 @ApiModel(description = "City's weather forecast details")
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 @JsonInclude
 @Entity
 public class City implements Serializable {
@@ -38,46 +39,24 @@ public class City implements Serializable {
     private String country;
 
 
-    @ApiModelProperty(notes = "Temperature in location")
-    @Column
-    private double temperature;
-
-    @ApiModelProperty(notes = "Time of sunrise")
-    @Column
-    private String sunrise;
-    @ApiModelProperty(notes = "Time of sunset")
-    @Column
-    private String sunset;
-
-
-    //fields not showed by json
-
     @CreationTimestamp
-    @JsonIgnore
     @Column
     private Timestamp timestamp;
 
 
-    //fields not stored in database
-
-    @JsonIgnore
-    @Transient
+    @Column
     int timeZone; //UNIX time shift UTC
 
-    @JsonIgnore
-    @Transient
-    private int sunriseOfTheLocation; //UNIX UTC
+    @Column
+    public int sunriseOfTheLocation; //UNIX UTC
 
-    @JsonIgnore
-    @Transient
-    private int sunSetOfTheLocation; //UNIX UTC
+    @Column
+    public int sunSetOfTheLocation; //UNIX UTC
 
-    @JsonIgnore
-    @Transient
-    private double temp; //temperature in K raw
+    @Column
+    public double temp; //temperature in K raw
 
 
-    //Unpacking from json, for DB
     @JsonProperty("sys")
     public void unpackNestedCountry(Map<String, Object> sys) {
         this.country = (String) sys.get("country");
@@ -97,22 +76,6 @@ public class City implements Serializable {
         this.temp = (double) main.get("temp");
     }
 
-
-    //  Get, set constructor
-
-    public City(String id, String cityName, String country, double temperature, String sunrise, String sunset) {
-        this.id = id;
-        this.cityName = cityName;
-        this.country = country;
-        this.temperature = temperature;
-        this.sunrise = sunrise;
-        this.sunset = sunset;
-    }
-
-    public City() {
-    }
-
-
     public String getId() {
         return id;
     }
@@ -129,40 +92,12 @@ public class City implements Serializable {
         this.cityName = cityName;
     }
 
-
     public String getCountry() {
         return country;
     }
 
     public void setCountry(String country) {
         this.country = country;
-    }
-
-    public double getTemperature() {
-        TemperatureConverter temperatureConverter = new TemperatureConverter();
-        double temperature = temperatureConverter.getCelsiusFormKelvin(temp);
-        return temperature;
-    }
-
-    public void setTemperature(double temperature) {
-        this.temperature = temperature;
-    }
-
-    public String getSunrise() {
-        DateConverter dateConverter = new DateConverter();
-        sunrise = dateConverter.getDateFormUnx(sunriseOfTheLocation + timeZone);
-        return sunrise;
-    }
-
-
-    public void setSunrise(String sunrise) {
-        this.sunrise = sunrise;
-    }
-
-    public String getSunset() {
-        DateConverter dateConverter = new DateConverter();
-        sunset = dateConverter.getDateFormUnx(sunSetOfTheLocation + timeZone);
-        return sunset;
     }
 
     public Timestamp getTimestamp() {
@@ -173,7 +108,36 @@ public class City implements Serializable {
         this.timestamp = timestamp;
     }
 
-    public void setSunset(String sunset) {
-        this.sunset = sunset;
+    public int getTimeZone() {
+        return timeZone;
+    }
+
+    public void setTimeZone(int timeZone) {
+        this.timeZone = timeZone;
+    }
+
+    public int getSunriseOfTheLocation() {
+        return sunriseOfTheLocation;
+    }
+
+    public void setSunriseOfTheLocation(int sunriseOfTheLocation) {
+        this.sunriseOfTheLocation = sunriseOfTheLocation;
+    }
+
+    public int getSunSetOfTheLocation() {
+        return sunSetOfTheLocation;
+    }
+
+    public void setSunSetOfTheLocation(int sunSetOfTheLocation) {
+        this.sunSetOfTheLocation = sunSetOfTheLocation;
+    }
+
+    public double getTemp() {
+        return temp;
+    }
+
+    public void setTemp(double temp) {
+        this.temp = temp;
     }
 }
+
