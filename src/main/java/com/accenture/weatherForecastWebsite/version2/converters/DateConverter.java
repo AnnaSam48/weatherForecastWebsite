@@ -1,10 +1,12 @@
 package com.accenture.weatherForecastWebsite.version2.converters;
 
+import org.springframework.stereotype.Component;
+
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
-
+@Component
 public class DateConverter {
     public String getDateFormUnx(int timeUnixRaw) {
 
