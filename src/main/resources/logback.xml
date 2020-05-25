@@ -29,7 +29,20 @@
         <appender-ref ref="FILE"/>
         <appender-ref ref="STDOUT"/>
     </logger>
-    <logger name="com.accenture.weatherForecastWebsite.version2.configAndScheduler.Scheduler" level ="trace" additivity="false">
+    <logger name="com.accenture.weatherForecastWebsite.version2.service.ServiceLogic.UpdateCity" level="trace" additivity="false">
+        <appender-ref ref="FILE"/>
+        <appender-ref ref="STDOUT"/>
+    </logger>
+    <logger name="com.accenture.weatherForecastWebsite.version2.service.ServiceLogic.AddNewCity" level="trace" additivity="false">
+        <appender-ref ref="FILE"/>
+        <appender-ref ref="STDOUT"/>
+    </logger>
+    <logger name="com.accenture.weatherForecastWebsite.version2.service.ServiceLogic.ForecastService" level="trace" additivity="false">
+        <appender-ref ref="FILE"/>
+        <appender-ref ref="STDOUT"/>
+    </logger>
+
+    <logger name="com.accenture.weatherForecastWebsite.version2.configurations.Scheduler" level ="trace" additivity="false">
         <appender-ref ref="FILE"/>
         <appender-ref ref="STDOUT"/>
     </logger>

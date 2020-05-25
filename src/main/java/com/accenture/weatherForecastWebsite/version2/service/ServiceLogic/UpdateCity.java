@@ -1,9 +1,9 @@
-package com.accenture.weatherForecastWebsite.version2.service;
+package com.accenture.weatherForecastWebsite.version2.service.ServiceLogic;
 
-import com.accenture.weatherForecastWebsite.version2.controller.ForecastRestController;
 import com.accenture.weatherForecastWebsite.version2.converters.TimeConverter;
 import com.accenture.weatherForecastWebsite.version2.model.City;
 import com.accenture.weatherForecastWebsite.version2.repository.ForecastsByCityRepository;
+import com.accenture.weatherForecastWebsite.version2.service.RequestServices.WeatherAPIRequestService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,12 +16,13 @@ import java.sql.Timestamp;
 @Component
 public class UpdateCity {
     @Autowired
-    WeatherAPIService weatherAPIService;
+    WeatherAPIRequestService weatherAPIRequestService;
     @Autowired
     ForecastsByCityRepository forecastsByCityRepository;
     @Autowired
     TimeConverter timeConverter;
-    Logger serviceLogger = LoggerFactory.getLogger(ForecastRestController.class);
+
+    Logger serviceLogger = LoggerFactory.getLogger(UpdateCity.class);
 
     public City updateCity(City cityToUpdate) {
 
@@ -29,20 +30,17 @@ public class UpdateCity {
 
         Timestamp currentTime = new Timestamp(System.currentTimeMillis());
         Timestamp lastTimeUpdate = cityToUpdate.getTimestamp();
-        System.out.println(String.valueOf(lastTimeUpdate));
+        Timestamp currentTimeMinusHour = new Timestamp((System.currentTimeMillis() - (60 * 60 * 1000)));
 
         if (!lastTimeUpdate.after(timeConverter.timeHourAgo())) {
-            City cityForUpdate = weatherAPIService.getForecastByCityID(matchedLocationId);
-            serviceLogger.trace("Data needs update...");
+            City cityForUpdate = weatherAPIRequestService.getForecastByCityID(matchedLocationId);
+            serviceLogger.trace("Data expired... Will update data...");
             cityToUpdate.setTimestamp(currentTime);
 
             serviceLogger.trace("Updating temperature data...");
             cityToUpdate.setTemp(cityForUpdate.getTemp());
 
             Date today = new Date(System.currentTimeMillis());
-
-
-//TODO Help!!!
             if (lastTimeUpdate.before(today)) {
                 cityToUpdate.setSunset(cityForUpdate.getSunset());
 

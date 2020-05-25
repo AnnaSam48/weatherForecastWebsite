@@ -1,5 +1,5 @@
 package weatherForecastWebsite.newVersion.controller;
-
+/*
 import com.accenture.weatherForecastWebsite.WeatherForecastWebsiteApplication;
 import com.accenture.weatherForecastWebsite.newVersion.model.Cities;
 import com.accenture.weatherForecastWebsite.newVersion.repository.ForecastsByCityRepository;
@@ -100,3 +100,5 @@ import static org.mockito.Mockito.*;
         }
 
     }
+
+ */
