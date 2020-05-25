@@ -19,7 +19,7 @@ public class UpdateCity {
     WeatherAPIService weatherAPIService;
     @Autowired
     ForecastsByCityRepository forecastsByCityRepository;
-    Logger serviceLogger = LoggerFactory.getLogger(UpdateCity.class);
+    Logger serviceLogger = LoggerFactory.getLogger(ForecastRestController.class);
 
     public City updateCity(City cityToUpdate) {
 
@@ -38,13 +38,13 @@ public class UpdateCity {
 
             Date today = new Date(System.currentTimeMillis());
             if (lastTimeUpdate.before(today)) {
-                cityToUpdate.setSunrise(cityForUpdate.getSunrise());
-                cityToUpdate.setSunset(cityForUpdate.getSunset());
+                cityToUpdate.setSunSetOfTheLocation(cityForUpdate.getSunSetOfTheLocation());
+                cityToUpdate.setSunriseOfTheLocation(cityForUpdate.getSunriseOfTheLocation());
                 serviceLogger.trace("Updating sunset and sunrise data...");
 
             }
             serviceLogger.trace("Updating temperature data...");
-            cityToUpdate.setTemperature(cityForUpdate.getTemperature());
+            cityToUpdate.setTemp(cityForUpdate.getTemp());
             forecastsByCityRepository.save(cityToUpdate);
             serviceLogger.trace("Update saved...");
 
