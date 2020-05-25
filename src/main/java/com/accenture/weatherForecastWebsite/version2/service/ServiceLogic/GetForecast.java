@@ -16,7 +16,6 @@ public class GetForecast {
     TimeConverter timeConverter;
     @Autowired
     TemperatureConverter temperatureConverter;
-//
 
     public Forecast getForecast(City cityToReturn) {
 
