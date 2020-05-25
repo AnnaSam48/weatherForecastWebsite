@@ -19,7 +19,7 @@ public class AddNewCity {
     @Autowired
     ForecastsByCityRepository forecastsByCityRepository;
 
-    Logger serviceLogger = LoggerFactory.getLogger(AddNewCity.class);
+    Logger serviceLogger = LoggerFactory.getLogger(ForecastRestController.class);
 
     public City addNewCiy(String cityToAdd) {
 
@@ -28,14 +28,16 @@ public class AddNewCity {
         newCity.setId(getNewCity.getId());
         newCity.setCityName(getNewCity.getCityName());
         newCity.setCountry(getNewCity.getCountry());
-        newCity.setTemperature(getNewCity.getTemperature());
-        newCity.setSunrise(getNewCity.getSunrise());
-        newCity.setSunset(getNewCity.getSunset());
+        newCity.setTemp(getNewCity.getTemp());
+        newCity.setTimeZone(getNewCity.getTimeZone());
+        newCity.setSunriseOfTheLocation(getNewCity.sunriseOfTheLocation);
+        newCity.setSunSetOfTheLocation(getNewCity.sunSetOfTheLocation);
+
         Timestamp currentTime = new Timestamp(System.currentTimeMillis());
         newCity.setTimestamp(currentTime);
         forecastsByCityRepository.save(newCity);
 
-        serviceLogger.trace("New city "+ getNewCity.getCityName() + " added in database...");
+        serviceLogger.trace("New city " + getNewCity.getCityName() + " added in database...");
         return newCity;
     }
 }
