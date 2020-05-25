@@ -20,7 +20,7 @@ public class AddNewCity {
 
     Logger serviceLogger = LoggerFactory.getLogger(ForecastRestController.class);
 
-    public City addNewCiy(String cityToAdd) {
+    public City addNewCity(String cityToAdd) {
 
         City getNewCity = weatherAPIService.getForecastByCity(cityToAdd);
         City newCity = new City();
@@ -29,8 +29,8 @@ public class AddNewCity {
         newCity.setCountry(getNewCity.getCountry());
         newCity.setTemp(getNewCity.getTemp());
         newCity.setTimeZone(getNewCity.getTimeZone());
-        newCity.setSunriseOfTheLocation(getNewCity.sunriseOfTheLocation);
-        newCity.setSunSetOfTheLocation(getNewCity.sunSetOfTheLocation);
+        newCity.setSunrise(getNewCity.getSunrise());
+        newCity.setSunset(getNewCity.getSunset());
 
         Timestamp currentTime = new Timestamp(System.currentTimeMillis());
         newCity.setTimestamp(currentTime);

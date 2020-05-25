@@ -48,10 +48,10 @@ public class City implements Serializable {
     int timeZone; //UNIX time shift UTC
 
     @Column
-    public int sunriseOfTheLocation; //UNIX UTC
+    public int sunrise; //UNIX UTC
 
     @Column
-    public int sunSetOfTheLocation; //UNIX UTC
+    public int sunset; //UNIX UTC
 
     @Column
     public double temp; //temperature in K raw
@@ -60,8 +60,8 @@ public class City implements Serializable {
     @JsonProperty("sys")
     public void unpackNestedCountry(Map<String, Object> sys) {
         this.country = (String) sys.get("country");
-        this.sunriseOfTheLocation = (int) sys.get("sunrise");
-        this.sunSetOfTheLocation = (int) sys.get("sunset");
+        this.sunrise = (int) sys.get("sunrise");
+        this.sunset = (int) sys.get("sunset");
     }
 
 
@@ -116,20 +116,20 @@ public class City implements Serializable {
         this.timeZone = timeZone;
     }
 
-    public int getSunriseOfTheLocation() {
-        return sunriseOfTheLocation;
+    public int getSunrise() {
+        return sunrise;
     }
 
-    public void setSunriseOfTheLocation(int sunriseOfTheLocation) {
-        this.sunriseOfTheLocation = sunriseOfTheLocation;
+    public void setSunrise(int sunrise) {
+        this.sunrise = sunrise;
     }
 
-    public int getSunSetOfTheLocation() {
-        return sunSetOfTheLocation;
+    public int getSunset() {
+        return sunset;
     }
 
-    public void setSunSetOfTheLocation(int sunSetOfTheLocation) {
-        this.sunSetOfTheLocation = sunSetOfTheLocation;
+    public void setSunset(int sunset) {
+        this.sunset = sunset;
     }
 
     public double getTemp() {

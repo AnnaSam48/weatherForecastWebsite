@@ -1,7 +1,6 @@
 package com.accenture.weatherForecastWebsite.version2.service;
 
 import com.accenture.weatherForecastWebsite.version2.model.City;
-import com.accenture.weatherForecastWebsite.version2.service.GetJsonResponseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.annotation.CacheConfig;
@@ -27,7 +26,7 @@ public class WeatherAPIService {
     private String prefixCityId;
 
     @Autowired
-    GetJsonResponseService getJsonResponseService;
+    WeatherApiClient weatherApiClient;
 
 
 
@@ -38,7 +37,7 @@ public class WeatherAPIService {
 
         try {
             URL url = new URL(requestUrlBegin + prefixName + userInput + apiKey);
-            City jsonResponse = getJsonResponseService.getJsonResponse(url);
+            City jsonResponse = weatherApiClient.getCityInformation(url);
             return jsonResponse;
         } catch (Exception e) {
             e.printStackTrace();
@@ -51,7 +50,7 @@ public class WeatherAPIService {
 
         try {
             URL url = new URL(requestUrlBegin + prefixCityId + cityID + apiKey);
-            City jsonResponse = getJsonResponseService.getJsonResponse(url);
+            City jsonResponse = weatherApiClient.getCityInformation(url);
             return jsonResponse;
         } catch (Exception e) {
             e.printStackTrace();

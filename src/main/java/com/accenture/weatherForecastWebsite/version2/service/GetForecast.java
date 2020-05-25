@@ -1,7 +1,7 @@
 package com.accenture.weatherForecastWebsite.version2.service;
 
 import com.accenture.weatherForecastWebsite.version2.controller.ForecastRestController;
-import com.accenture.weatherForecastWebsite.version2.converters.DateConverter;
+import com.accenture.weatherForecastWebsite.version2.converters.TimeConverter;
 import com.accenture.weatherForecastWebsite.version2.converters.TemperatureConverter;
 import com.accenture.weatherForecastWebsite.version2.model.City;
 import com.accenture.weatherForecastWebsite.version2.model.Forecast;
@@ -22,7 +22,7 @@ public class GetForecast {
     @Autowired
     Forecast forecastClass;
     @Autowired
-    DateConverter dateConverter;
+    TimeConverter timeConverter;
     @Autowired
     TemperatureConverter temperatureConverter;
 
@@ -32,11 +32,11 @@ public class GetForecast {
 
         forecastClass.setCityName(cityToReturn.getCityName());
         forecastClass.setCountry(cityToReturn.getCountry());
-        forecastClass.setSunrise(dateConverter.getDateFormUnx
-                (cityToReturn.getSunriseOfTheLocation() + cityToReturn.getTimeZone()));
+        forecastClass.setSunrise(timeConverter.getTimeFormUnx
+                (cityToReturn.getSunrise() + cityToReturn.getTimeZone()));
 
-        forecastClass.setSunset(dateConverter.getDateFormUnx
-                (cityToReturn.getSunSetOfTheLocation() + cityToReturn.getTimeZone()));
+        forecastClass.setSunset(timeConverter.getTimeFormUnx
+                (cityToReturn.getSunset() + cityToReturn.getTimeZone()));
         forecastClass.setTemperature(String.valueOf(temperatureConverter.getCelsiusFormKelvin(cityToReturn.getTemp())) + " " + "\u00B0" + "C");
         return forecastClass;
 

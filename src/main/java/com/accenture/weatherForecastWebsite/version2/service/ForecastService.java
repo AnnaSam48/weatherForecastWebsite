@@ -1,8 +1,7 @@
 package com.accenture.weatherForecastWebsite.version2.service;
 
 import com.accenture.weatherForecastWebsite.version2.controller.ForecastRestController;
-import com.accenture.weatherForecastWebsite.version2.converters.DateConverter;
-import com.accenture.weatherForecastWebsite.version2.converters.TemperatureConverter;
+import com.accenture.weatherForecastWebsite.version2.converters.TimeConverter;
 import com.accenture.weatherForecastWebsite.version2.model.City;
 import com.accenture.weatherForecastWebsite.version2.model.Forecast;
 import com.accenture.weatherForecastWebsite.version2.repository.ForecastsByCityRepository;
@@ -22,9 +21,6 @@ public class ForecastService {
     @Autowired
     City city;
     @Autowired
-    Forecast forecastClass;
-
-    @Autowired
     ForecastsByCityRepository forecastsByCityRepository;
     @Autowired
     WeatherAPIService weatherAPIService;
@@ -32,11 +28,10 @@ public class ForecastService {
     AddNewCity addNewCity;
     @Autowired
     UpdateCity updateCity;
+    @Autowired
+    TimeConverter timeConverter;
 
-    @Autowired
-    DateConverter dateConverter;
-    @Autowired
-    TemperatureConverter temperatureConverter;
+
     @Autowired
     GetForecast getForecast;
 
@@ -53,10 +48,9 @@ public class ForecastService {
         if (matchedLocation != null) {
             serviceLogger.trace("Forecast for " + cityName + " found in database...");
             Timestamp lastTimeUpdate = matchedLocation.getTimestamp();
-            Timestamp currentTimeMinusHour = new Timestamp((System.currentTimeMillis() - (60 * 60 * 1000)));
             serviceLogger.trace("Checking the timestamp...");
 
-            if (lastTimeUpdate.after(currentTimeMinusHour)) {
+            if (lastTimeUpdate.after(timeConverter.timeHourAgo())) {
                 serviceLogger.trace("Data returned from database...");
                 return getForecast.getForecast(matchedLocation);
             } else {
@@ -81,7 +75,7 @@ public class ForecastService {
 
         if (matchedLocation == null) {
             serviceLogger.trace("No city found in database...");
-            return addNewCity.addNewCiy(cityName);
+            return addNewCity.addNewCity(cityName);
 
         } else {
             serviceLogger.trace("Data about " + cityName + " already found in database");

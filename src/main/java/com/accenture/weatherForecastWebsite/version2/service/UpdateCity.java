@@ -1,6 +1,7 @@
 package com.accenture.weatherForecastWebsite.version2.service;
 
 import com.accenture.weatherForecastWebsite.version2.controller.ForecastRestController;
+import com.accenture.weatherForecastWebsite.version2.converters.TimeConverter;
 import com.accenture.weatherForecastWebsite.version2.model.City;
 import com.accenture.weatherForecastWebsite.version2.repository.ForecastsByCityRepository;
 import org.slf4j.Logger;
@@ -18,6 +19,8 @@ public class UpdateCity {
     WeatherAPIService weatherAPIService;
     @Autowired
     ForecastsByCityRepository forecastsByCityRepository;
+    @Autowired
+    TimeConverter timeConverter;
     Logger serviceLogger = LoggerFactory.getLogger(ForecastRestController.class);
 
     public City updateCity(City cityToUpdate) {
@@ -26,24 +29,29 @@ public class UpdateCity {
 
         Timestamp currentTime = new Timestamp(System.currentTimeMillis());
         Timestamp lastTimeUpdate = cityToUpdate.getTimestamp();
-        Timestamp currentTimeMinusHour = new Timestamp((System.currentTimeMillis() - (60 * 60 * 1000)));
+        System.out.println(String.valueOf(lastTimeUpdate));
 
-
-        if (currentTimeMinusHour.after(lastTimeUpdate)) {
+        if (!lastTimeUpdate.after(timeConverter.timeHourAgo())) {
             City cityForUpdate = weatherAPIService.getForecastByCityID(matchedLocationId);
             serviceLogger.trace("Data needs update...");
             cityToUpdate.setTimestamp(currentTime);
 
-
-            Date today = new Date(System.currentTimeMillis());
-            if (lastTimeUpdate.before(today)) {
-                cityToUpdate.setSunSetOfTheLocation(cityForUpdate.getSunSetOfTheLocation());
-                cityToUpdate.setSunriseOfTheLocation(cityForUpdate.getSunriseOfTheLocation());
-                serviceLogger.trace("Updating sunset and sunrise data...");
-
-            }
             serviceLogger.trace("Updating temperature data...");
             cityToUpdate.setTemp(cityForUpdate.getTemp());
+
+            Date today = new Date(System.currentTimeMillis());
+
+
+//TODO Help!!!
+            if (lastTimeUpdate.before(today)) {
+                cityToUpdate.setSunset(cityForUpdate.getSunset());
+
+                cityToUpdate.setSunrise(cityForUpdate.getSunrise());
+                 serviceLogger.trace("Updating sunset and sunrise data...");
+            } else {
+                System.out.println("after");
+            }
+
             forecastsByCityRepository.save(cityToUpdate);
             serviceLogger.trace("Update saved...");
 
