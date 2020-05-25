@@ -28,31 +28,32 @@ public class City implements Serializable {
     @ApiModelProperty(notes = "Unique identifier for location", required = true)
     @Id
     private String id;
-
     @ApiModelProperty(notes = "Name of the location", required = true)
     @Column
     @JsonProperty("name")
     private String cityName;
-
     @ApiModelProperty(notes = "Country code")
     @Column
     private String country;
 
-
+    @ApiModelProperty(notes= "Time data accessed")
     @CreationTimestamp
     @Column
     private Timestamp timestamp;
 
-
+    @ApiModelProperty(notes = "Time shift UNIX to UTC")
     @Column
     int timeZone; //UNIX time shift UTC
 
+    @ApiModelProperty(notes = "Time of sunrise")
     @Column
     public int sunrise; //UNIX UTC
 
+    @ApiModelProperty(notes = "Time of sunset")
     @Column
     public int sunset; //UNIX UTC
 
+    @ApiModelProperty(notes = "Temperature in Kelvins")
     @Column
     public double temp; //temperature in K raw
 

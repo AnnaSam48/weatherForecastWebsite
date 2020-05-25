@@ -18,7 +18,7 @@ public class AddNewCity {
     @Autowired
     ForecastsByCityRepository forecastsByCityRepository;
 
-    Logger serviceLogger = LoggerFactory.getLogger(ForecastRestController.class);
+    Logger serviceLogger = LoggerFactory.getLogger(AddNewCity.class);
 
     public City addNewCity(String cityToAdd) {
 

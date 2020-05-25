@@ -35,7 +35,7 @@ public class ForecastService {
     @Autowired
     GetForecast getForecast;
 
-    Logger serviceLogger = LoggerFactory.getLogger(ForecastRestController.class);
+    Logger serviceLogger = LoggerFactory.getLogger(ForecastService.class);
 
     public City getCity() {
         return city;
@@ -54,7 +54,7 @@ public class ForecastService {
                 serviceLogger.trace("Data returned from database...");
                 return getForecast.getForecast(matchedLocation);
             } else {
-                serviceLogger.trace("Data retrieved from Api...");
+                serviceLogger.trace("Data retrieved from external API...");
                 City forecast = weatherAPIService.getForecastByCity(cityName);
 
                 return getForecast.getForecast(forecast);
@@ -62,7 +62,7 @@ public class ForecastService {
 
         } else {
             City forecast = weatherAPIService.getForecastByCity(cityName);
-            serviceLogger.trace("Data retrieved from Api...");
+            serviceLogger.trace("Data retrieved from external API...");
             return getForecast.getForecast(forecast);
         }
 
@@ -78,7 +78,7 @@ public class ForecastService {
             return addNewCity.addNewCity(cityName);
 
         } else {
-            serviceLogger.trace("Data about " + cityName + " already found in database");
+            serviceLogger.trace("Data about " + cityName + " already in database");
             return updateCity.updateCity(matchedLocation);
         }
 

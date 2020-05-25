@@ -26,7 +26,6 @@ public class GetForecast {
     @Autowired
     TemperatureConverter temperatureConverter;
 
-    Logger serviceLogger = LoggerFactory.getLogger(ForecastRestController.class);
 
     public Forecast getForecast(City cityToReturn) {
 

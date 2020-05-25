@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 
 import java.sql.Date;
 import java.sql.Timestamp;
+import java.util.Optional;
 
 
 @Component
@@ -21,7 +22,8 @@ public class UpdateCity {
     ForecastsByCityRepository forecastsByCityRepository;
     @Autowired
     TimeConverter timeConverter;
-    Logger serviceLogger = LoggerFactory.getLogger(ForecastRestController.class);
+
+    Logger serviceLogger = LoggerFactory.getLogger(UpdateCity.class);
 
     public City updateCity(City cityToUpdate) {
 
@@ -29,20 +31,17 @@ public class UpdateCity {
 
         Timestamp currentTime = new Timestamp(System.currentTimeMillis());
         Timestamp lastTimeUpdate = cityToUpdate.getTimestamp();
-        System.out.println(String.valueOf(lastTimeUpdate));
+        Timestamp currentTimeMinusHour = new Timestamp((System.currentTimeMillis() - (60 * 60 * 1000)));
 
         if (!lastTimeUpdate.after(timeConverter.timeHourAgo())) {
             City cityForUpdate = weatherAPIService.getForecastByCityID(matchedLocationId);
-            serviceLogger.trace("Data needs update...");
+            serviceLogger.trace("Data expired... Will update data...");
             cityToUpdate.setTimestamp(currentTime);
 
             serviceLogger.trace("Updating temperature data...");
             cityToUpdate.setTemp(cityForUpdate.getTemp());
 
             Date today = new Date(System.currentTimeMillis());
-
-
-//TODO Help!!!
             if (lastTimeUpdate.before(today)) {
                 cityToUpdate.setSunset(cityForUpdate.getSunset());
 
