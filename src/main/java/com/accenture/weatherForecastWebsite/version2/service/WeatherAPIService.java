@@ -1,4 +1,4 @@
-package com.accenture.weatherForecastWebsite.version2.ApiService;
+package com.accenture.weatherForecastWebsite.version2.service;
 
 import com.accenture.weatherForecastWebsite.version2.model.City;
 import com.accenture.weatherForecastWebsite.version2.service.GetJsonResponseService;
@@ -40,7 +40,7 @@ public class WeatherAPIService {
             URL url = new URL(requestUrlBegin + prefixName + userInput + apiKey);
             City jsonResponse = getJsonResponseService.getJsonResponse(url);
             return jsonResponse;
-        }catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
             throw new RuntimeException();
         }

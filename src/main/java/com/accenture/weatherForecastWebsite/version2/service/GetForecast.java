@@ -1,6 +1,5 @@
 package com.accenture.weatherForecastWebsite.version2.service;
 
-import com.accenture.weatherForecastWebsite.version2.ApiService.WeatherAPIService;
 import com.accenture.weatherForecastWebsite.version2.controller.ForecastRestController;
 import com.accenture.weatherForecastWebsite.version2.converters.DateConverter;
 import com.accenture.weatherForecastWebsite.version2.converters.TemperatureConverter;
