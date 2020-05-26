@@ -1,4 +1,3 @@
-
 package com.accenture.weatherForecastWebsite.version2.service.RequestServices;
 
 import com.accenture.weatherForecastWebsite.version2.model.City;

@@ -30,11 +30,10 @@ public class UpdateCity {
 
         Timestamp currentTime = new Timestamp(System.currentTimeMillis());
         Timestamp lastTimeUpdate = cityToUpdate.getTimestamp();
-        Timestamp currentTimeMinusHour = new Timestamp((System.currentTimeMillis() - (60 * 60 * 1000)));
 
         if (!lastTimeUpdate.after(timeConverter.timeHourAgo())) {
-            City cityForUpdate = weatherAPIRequestService.getForecastByCityID(matchedLocationId);
             serviceLogger.trace("Data expired... Will update data...");
+            City cityForUpdate = weatherAPIRequestService.getForecastByCityID(matchedLocationId);
             cityToUpdate.setTimestamp(currentTime);
 
             serviceLogger.trace("Updating temperature data...");
@@ -42,17 +41,13 @@ public class UpdateCity {
 
             Date today = new Date(System.currentTimeMillis());
             if (lastTimeUpdate.before(today)) {
+                serviceLogger.trace("Updating sunset and sunrise data...");
                 cityToUpdate.setSunset(cityForUpdate.getSunset());
-
                 cityToUpdate.setSunrise(cityForUpdate.getSunrise());
-                 serviceLogger.trace("Updating sunset and sunrise data...");
-            } else {
-                System.out.println("after");
+
             }
-
+            serviceLogger.trace("Saving update...");
             forecastsByCityRepository.save(cityToUpdate);
-            serviceLogger.trace("Update saved...");
-
 
         } else {
             serviceLogger.trace("No need for update, data up to date ");

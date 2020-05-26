@@ -8,6 +8,8 @@ import com.accenture.weatherForecastWebsite.version2.service.ServiceLogic.Update
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import static com.accenture.weatherForecastWebsite.version2.constants.ForecastConstants.API_MEDIA_TYPE;
+
 
 @RestController
 @RequestMapping("/forecast")
@@ -24,7 +26,7 @@ public class ForecastRestController {
     UpdateCity updateCity;
 
 
-    @GetMapping(value = "/{cityName}", produces = "application/json")
+    @GetMapping(value = "/{cityName}", produces = API_MEDIA_TYPE)
     public Forecast getForecast(@PathVariable String cityName) {
         return forecastService.findForecast(cityName);
     }
@@ -37,6 +39,7 @@ public class ForecastRestController {
 
     @PutMapping(value = "/{cityId}")
     public City updatedForecast(@PathVariable String cityId) {
-        return forecastService.setForecast(cityId);
+
+        return updateCity.updateCity(forecastsByCityRepository.findById(cityId).get());
     }
 }
