@@ -1,4 +1,4 @@
-package com.accenture.weatherForecastWebsite.version2.service.Request;
+package com.accenture.weatherForecastWebsite.version2.service;
 
 import com.accenture.weatherForecastWebsite.version2.model.City;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,7 +8,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 import java.net.URL;
 
 @Component
-public class WeatherApiRequest {
+public class WeatherApiWebClient {
 
 
     @Autowired

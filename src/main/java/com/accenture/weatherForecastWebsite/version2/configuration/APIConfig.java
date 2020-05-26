@@ -3,6 +3,7 @@ package com.accenture.weatherForecastWebsite.version2.configuration;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.web.reactive.function.client.WebClient;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
@@ -15,6 +16,7 @@ import java.util.Collections;
 
 @EnableSwagger2
 @Configuration
+@EnableScheduling
 @EnableCaching
 public class APIConfig {
 

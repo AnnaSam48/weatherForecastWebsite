@@ -25,28 +25,23 @@
         </rollingPolicy>
     </appender>
 
-    <logger name="com.accenture.weatherForecastWebsite.version2.controller" level="trace" additivity="false">
-        <appender-ref ref="FILE"/>
-        <appender-ref ref="STDOUT"/>
-    </logger>
-    <logger name="com.accenture.weatherForecastWebsite.version2.service.Logic.UpdateCity" level="trace" additivity="false">
-        <appender-ref ref="FILE"/>
-        <appender-ref ref="STDOUT"/>
-    </logger>
-    <logger name="com.accenture.weatherForecastWebsite.version2.service.Logic.AddNewCity" level="trace" additivity="false">
-        <appender-ref ref="FILE"/>
-        <appender-ref ref="STDOUT"/>
-    </logger>
-    <logger name="com.accenture.weatherForecastWebsite.version2.service.Logic.ForecastService" level="trace" additivity="false">
-        <appender-ref ref="FILE"/>
-        <appender-ref ref="STDOUT"/>
-    </logger>
 
-    <logger name="com.accenture.weatherForecastWebsite.version2.configurations.Scheduler" level ="trace" additivity="false">
+    <logger name="com.accenture.weatherForecastWebsite.version2.logic.UpdateCity" level="trace" additivity="false">
         <appender-ref ref="FILE"/>
         <appender-ref ref="STDOUT"/>
     </logger>
-
+    <logger name="com.accenture.weatherForecastWebsite.version2.logic.AddNewCity" level="trace" additivity="false">
+        <appender-ref ref="FILE"/>
+        <appender-ref ref="STDOUT"/>
+    </logger>
+    <logger name="com.accenture.weatherForecastWebsite.version2.logic.ForecastService" level="trace" additivity="false">
+        <appender-ref ref="FILE"/>
+        <appender-ref ref="STDOUT"/>
+    </logger>
+    <logger name="com.accenture.weatherForecastWebsite.version2.service.ScheduledDataUpdate" level ="INFO" additivity="false">
+        <appender-ref ref="FILE"/>
+        <appender-ref ref="STDOUT"/>
+    </logger>
 
     <root level="INFO">
         <appender-ref ref="STDOUT"/>

@@ -1,8 +1,8 @@
-package com.accenture.weatherForecastWebsite.version2.service.Logic;
+package com.accenture.weatherForecastWebsite.version2.logic;
 
 import com.accenture.weatherForecastWebsite.version2.model.City;
 import com.accenture.weatherForecastWebsite.version2.repository.ForecastsByCityRepository;
-import com.accenture.weatherForecastWebsite.version2.service.Request.WeatherAPIRequestService;
+import com.accenture.weatherForecastWebsite.version2.service.WeatherAPIRequests;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +13,7 @@ import java.sql.Timestamp;
 @Component
 public class AddNewCity {
     @Autowired
-    WeatherAPIRequestService weatherAPIRequestService;
+    WeatherAPIRequests weatherAPIRequests;
     @Autowired
     ForecastsByCityRepository forecastsByCityRepository;
 
@@ -21,7 +21,7 @@ public class AddNewCity {
 
     public City addNewCity(String cityToAdd) {
 
-        City getNewCity = weatherAPIRequestService.getForecastByCity(cityToAdd);
+        City getNewCity = weatherAPIRequests.getForecastByCity(cityToAdd);
         City newCity = new City();
         newCity.setId(getNewCity.getId());
         newCity.setCityName(getNewCity.getCityName());

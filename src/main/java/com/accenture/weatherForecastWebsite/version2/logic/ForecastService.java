@@ -1,10 +1,10 @@
-package com.accenture.weatherForecastWebsite.version2.service.Logic;
+package com.accenture.weatherForecastWebsite.version2.logic;
 
 import com.accenture.weatherForecastWebsite.version2.converters.TimeConverter;
 import com.accenture.weatherForecastWebsite.version2.model.City;
 import com.accenture.weatherForecastWebsite.version2.model.Forecast;
 import com.accenture.weatherForecastWebsite.version2.repository.ForecastsByCityRepository;
-import com.accenture.weatherForecastWebsite.version2.service.Request.WeatherAPIRequestService;
+import com.accenture.weatherForecastWebsite.version2.service.WeatherAPIRequests;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +23,7 @@ public class ForecastService {
     @Autowired
     ForecastsByCityRepository forecastsByCityRepository;
     @Autowired
-    WeatherAPIRequestService weatherAPIService;
+    WeatherAPIRequests weatherAPIService;
     @Autowired
     AddNewCity addNewCity;
     @Autowired
