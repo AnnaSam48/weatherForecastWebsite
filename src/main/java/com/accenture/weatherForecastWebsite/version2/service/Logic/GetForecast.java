@@ -1,4 +1,4 @@
-package com.accenture.weatherForecastWebsite.version2.service.ServiceLogic;
+package com.accenture.weatherForecastWebsite.version2.service.Logic;
 
 import com.accenture.weatherForecastWebsite.version2.converters.TimeConverter;
 import com.accenture.weatherForecastWebsite.version2.converters.TemperatureConverter;

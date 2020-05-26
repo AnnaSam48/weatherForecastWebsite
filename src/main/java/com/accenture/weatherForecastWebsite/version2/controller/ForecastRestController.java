@@ -3,8 +3,8 @@ package com.accenture.weatherForecastWebsite.version2.controller;
 import com.accenture.weatherForecastWebsite.version2.model.City;
 import com.accenture.weatherForecastWebsite.version2.model.Forecast;
 import com.accenture.weatherForecastWebsite.version2.repository.ForecastsByCityRepository;
-import com.accenture.weatherForecastWebsite.version2.service.ServiceLogic.ForecastService;
-import com.accenture.weatherForecastWebsite.version2.service.ServiceLogic.UpdateCity;
+import com.accenture.weatherForecastWebsite.version2.service.Logic.ForecastService;
+import com.accenture.weatherForecastWebsite.version2.service.Logic.UpdateCity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

@@ -1,4 +1,4 @@
-package com.accenture.weatherForecastWebsite.version2.service.RequestServices;
+package com.accenture.weatherForecastWebsite.version2.service.Request;
 
 import com.accenture.weatherForecastWebsite.version2.model.City;
 import org.springframework.beans.factory.annotation.Autowired;
