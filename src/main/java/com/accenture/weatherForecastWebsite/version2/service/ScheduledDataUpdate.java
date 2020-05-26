@@ -60,15 +60,12 @@ public class ScheduledDataUpdate {
                             .findByCityNameIgnoreCaseContaining(city) != null
                             && forecastsByCityRepository.findByCountry(country) == null
                     ) {
-
-                        cronJobLogger.info(mostPopularDestination + " not found. Adding " + mostPopularDestination + "...");
                         addNewCity.addNewCity(city);
 
                         //Check if there is a city  in db with matching name, but in different country
                     } else if (forecastsByCityRepository
                             .findByCityNameAndCountryIgnoreCaseContaining(city, country) == null) {
 
-                        cronJobLogger.info(mostPopularDestination + " not found. Adding " + mostPopularDestination + "...");
                         addNewCity.addNewCity(city);
 
                     } else {
@@ -83,7 +80,6 @@ public class ScheduledDataUpdate {
                     if (forecastsByCityRepository
                             .findByCityNameIgnoreCaseContaining(mostPopularDestination) == null) {
 
-                        cronJobLogger.info(mostPopularDestination + " not found. Adding " + mostPopularDestination + "...");
                         addNewCity.addNewCity(mostPopularDestination);
 
                     } else {
@@ -94,7 +90,7 @@ public class ScheduledDataUpdate {
                     }
                 }
             });
-        cronJobLogger.info("Cron job finished");
+            cronJobLogger.info("Cron job finished");
         } catch (RuntimeException ex) {
             cronJobLogger.error(ex.toString());
             throw new RuntimeException(ex);
