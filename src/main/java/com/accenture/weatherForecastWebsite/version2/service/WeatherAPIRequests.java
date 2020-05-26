@@ -1,4 +1,4 @@
-package com.accenture.weatherForecastWebsite.version2.service.Request;
+package com.accenture.weatherForecastWebsite.version2.service;
 
 import com.accenture.weatherForecastWebsite.version2.model.City;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,13 +13,13 @@ import static com.accenture.weatherForecastWebsite.version2.constants.ForecastCo
 
 @CacheConfig(cacheNames = "cityCache")
 @Service
-public class WeatherAPIRequestService {
+public class WeatherAPIRequests {
 
     @Value("${weather.api.key}") //You have to have API key to access external API
     private String apiKey;
 
     @Autowired
-    WeatherApiRequest weatherApiRequest;
+    WeatherApiWebClient weatherApiWebClient;
 
     @Cacheable(cacheNames = "findByCityName", key = "#userInput")
     public City getForecastByCity(String userInput) {
@@ -27,7 +27,7 @@ public class WeatherAPIRequestService {
 
         try {
             URL url = new URL(OPENWEATHER_API_BASE_URL + REQUEST_BY_NAME + userInput + apiKey);
-            return weatherApiRequest.getCityInformation(url);
+            return weatherApiWebClient.getCityInformation(url);
         } catch (Exception e) {
             e.printStackTrace();
             throw new RuntimeException();
@@ -39,7 +39,7 @@ public class WeatherAPIRequestService {
 
         try {
             URL url = new URL(OPENWEATHER_API_BASE_URL + REQUEST_BY_ID + cityID + apiKey);
-            return weatherApiRequest.getCityInformation(url);
+            return weatherApiWebClient.getCityInformation(url);
 
         } catch (Exception e) {
             e.printStackTrace();

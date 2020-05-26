@@ -1,9 +1,9 @@
-package com.accenture.weatherForecastWebsite.version2.service.Logic;
+package com.accenture.weatherForecastWebsite.version2.logic;
 
 import com.accenture.weatherForecastWebsite.version2.converters.TimeConverter;
 import com.accenture.weatherForecastWebsite.version2.model.City;
 import com.accenture.weatherForecastWebsite.version2.repository.ForecastsByCityRepository;
-import com.accenture.weatherForecastWebsite.version2.service.Request.WeatherAPIRequestService;
+import com.accenture.weatherForecastWebsite.version2.service.WeatherAPIRequests;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +16,7 @@ import java.sql.Timestamp;
 @Component
 public class UpdateCity {
     @Autowired
-    WeatherAPIRequestService weatherAPIRequestService;
+    WeatherAPIRequests weatherAPIRequests;
     @Autowired
     ForecastsByCityRepository forecastsByCityRepository;
     @Autowired
@@ -33,7 +33,7 @@ public class UpdateCity {
 
         if (!lastTimeUpdate.after(timeConverter.timeHourAgo())) {
             serviceLogger.trace("Data expired... Will update data...");
-            City cityForUpdate = weatherAPIRequestService.getForecastByCityID(matchedLocationId);
+            City cityForUpdate = weatherAPIRequests.getForecastByCityID(matchedLocationId);
             cityToUpdate.setTimestamp(currentTime);
 
             serviceLogger.trace("Updating temperature data...");
