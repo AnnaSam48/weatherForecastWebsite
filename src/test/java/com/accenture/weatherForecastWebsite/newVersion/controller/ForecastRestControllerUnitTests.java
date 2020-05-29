@@ -63,6 +63,8 @@ public class ForecastRestControllerUnitTests {
         String jsonResponse = "{\"id\":\"6167865\",\"cityName\":\"Toronto\"," +
                 "\"country\":\"CA\",\"temp\":12.4,\"sunrise\":\"12:49\",\"sunset\":\"03:39\"}";
 
+        //when(mockRepository.findByCityName(eq("Toronto"))).thenReturn( new Cities())
+
         try {
             mockMvc.perform(post("/forecast/tokyo")
                     .contentType(MediaType.APPLICATION_JSON)

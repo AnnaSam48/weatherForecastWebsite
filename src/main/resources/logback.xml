@@ -26,11 +26,8 @@
     </appender>
 
 
-    <logger name="com.accenture.weatherForecastWebsite.version2.logic.UpdateCity" level="trace" additivity="false">
-        <appender-ref ref="FILE"/>
-        <appender-ref ref="STDOUT"/>
-    </logger>
-    <logger name="com.accenture.weatherForecastWebsite.version2.logic.AddNewCity" level="trace" additivity="false">
+
+    <logger name="com.accenture.weatherForecastWebsite.version2.logic.CityService" level="trace" additivity="false">
         <appender-ref ref="FILE"/>
         <appender-ref ref="STDOUT"/>
     </logger>
@@ -38,7 +35,7 @@
         <appender-ref ref="FILE"/>
         <appender-ref ref="STDOUT"/>
     </logger>
-    <logger name="com.accenture.weatherForecastWebsite.version2.service.ScheduledDataUpdate" level ="INFO" additivity="false">
+    <logger name="com.accenture.weatherForecastWebsite.version2.service.SchedUpdateMostTraveledCities" level ="INFO" additivity="false">
         <appender-ref ref="FILE"/>
         <appender-ref ref="STDOUT"/>
     </logger>

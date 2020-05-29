@@ -1,10 +1,10 @@
 package com.accenture.weatherForecastWebsite.version2.controller;
 
+import com.accenture.weatherForecastWebsite.version2.logic.CityService;
 import com.accenture.weatherForecastWebsite.version2.model.City;
 import com.accenture.weatherForecastWebsite.version2.model.Forecast;
 import com.accenture.weatherForecastWebsite.version2.repository.ForecastsByCityRepository;
 import com.accenture.weatherForecastWebsite.version2.logic.ForecastService;
-import com.accenture.weatherForecastWebsite.version2.logic.UpdateCity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,7 +23,9 @@ public class ForecastRestController {
     ForecastsByCityRepository forecastsByCityRepository;
 
     @Autowired
-    UpdateCity updateCity;
+    CityService cityService;
+
+
 
 
     @GetMapping(value = "/{cityName}", produces = API_MEDIA_TYPE)
@@ -40,6 +42,7 @@ public class ForecastRestController {
     @PutMapping(value = "/{cityId}")
     public City updatedForecast(@PathVariable String cityId) {
 
-        return updateCity.updateCity(forecastsByCityRepository.findById(cityId).get());
+        return cityService.updateCity(forecastsByCityRepository.findById(cityId).get());
+
     }
 }

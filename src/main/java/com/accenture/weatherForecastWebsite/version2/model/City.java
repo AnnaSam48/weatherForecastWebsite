@@ -141,4 +141,3 @@ public class City implements Serializable {
         this.temp = temp;
     }
 }
-

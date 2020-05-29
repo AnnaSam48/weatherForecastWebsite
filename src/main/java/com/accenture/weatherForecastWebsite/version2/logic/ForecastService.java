@@ -1,5 +1,6 @@
 package com.accenture.weatherForecastWebsite.version2.logic;
 
+import com.accenture.weatherForecastWebsite.version2.converters.TemperatureConverter;
 import com.accenture.weatherForecastWebsite.version2.converters.TimeConverter;
 import com.accenture.weatherForecastWebsite.version2.model.City;
 import com.accenture.weatherForecastWebsite.version2.model.Forecast;
@@ -25,20 +26,32 @@ public class ForecastService {
     @Autowired
     WeatherAPIRequests weatherAPIService;
     @Autowired
-    AddNewCity addNewCity;
-    @Autowired
-    UpdateCity updateCity;
+    CityService cityService;
     @Autowired
     TimeConverter timeConverter;
-
-
     @Autowired
-    GetForecast getForecast;
+    Forecast forecastClass;
+    @Autowired
+    TemperatureConverter temperatureConverter;
 
     Logger serviceLogger = LoggerFactory.getLogger(ForecastService.class);
 
     public City getCity() {
         return city;
+    }
+
+    public Forecast getForecast(City cityToReturn) {
+
+        forecastClass.setCityName(cityToReturn.getCityName());
+        forecastClass.setCountry(cityToReturn.getCountry());
+        forecastClass.setSunrise(timeConverter.getTimeFormUnx
+                (cityToReturn.getSunrise() + cityToReturn.getTimeZone()));
+
+        forecastClass.setSunset(timeConverter.getTimeFormUnx
+                (cityToReturn.getSunset() + cityToReturn.getTimeZone()));
+        forecastClass.setTemperature(String.valueOf(temperatureConverter.getCelsiusFormKelvin(cityToReturn.getTemp())) + " " + "\u00B0" + "C");
+        return forecastClass;
+
     }
 
     public Forecast findForecast(String cityName) {
@@ -52,18 +65,18 @@ public class ForecastService {
 
             if (lastTimeUpdate.after(timeConverter.timeHourAgo())) {
                 serviceLogger.trace("Data returned from database...");
-                return getForecast.getForecast(matchedLocation);
+                return getForecast(matchedLocation);
             } else {
                 serviceLogger.trace("Data retrieved from external API...");
                 City forecast = weatherAPIService.getForecastByCity(cityName);
 
-                return getForecast.getForecast(forecast);
+                return getForecast(forecast);
             }
 
         } else {
             City forecast = weatherAPIService.getForecastByCity(cityName);
             serviceLogger.trace("Data retrieved from external API...");
-            return getForecast.getForecast(forecast);
+            return getForecast(forecast);
         }
 
 
@@ -75,11 +88,11 @@ public class ForecastService {
 
         if (matchedLocation == null) {
             serviceLogger.trace("No city found in database...");
-            return addNewCity.addNewCity(cityName);
+            return cityService.addNewCity(cityName);
 
         } else {
             serviceLogger.trace("Data about " + cityName + " already in database");
-            return updateCity.updateCity(matchedLocation);
+            return cityService.updateCity(matchedLocation);
         }
 
     }

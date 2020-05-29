@@ -8,13 +8,15 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.sql.Date;
 import java.sql.Timestamp;
 
-
 @Component
-public class UpdateCity {
+@Service
+public class CityService {
+
     @Autowired
     WeatherAPIRequests weatherAPIRequests;
     @Autowired
@@ -22,7 +24,27 @@ public class UpdateCity {
     @Autowired
     TimeConverter timeConverter;
 
-    Logger serviceLogger = LoggerFactory.getLogger(UpdateCity.class);
+    Logger serviceLogger = LoggerFactory.getLogger(CityService.class);
+
+    public City addNewCity(String cityToAdd) {
+
+        City getNewCity = weatherAPIRequests.getForecastByCity(cityToAdd);
+        City newCity = new City();
+        newCity.setId(getNewCity.getId());
+        newCity.setCityName(getNewCity.getCityName());
+        newCity.setCountry(getNewCity.getCountry());
+        newCity.setTemp(getNewCity.getTemp());
+        newCity.setTimeZone(getNewCity.getTimeZone());
+        newCity.setSunrise(getNewCity.getSunrise());
+        newCity.setSunset(getNewCity.getSunset());
+
+        Timestamp currentTime = new Timestamp(System.currentTimeMillis());
+        newCity.setTimestamp(currentTime);
+        forecastsByCityRepository.save(newCity);
+
+        serviceLogger.trace("New city " + getNewCity.getCityName() + " added in database...");
+        return newCity;
+    }
 
     public City updateCity(City cityToUpdate) {
 
